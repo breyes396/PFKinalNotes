@@ -1,6 +1,5 @@
 package org.binaryminds.kinalnotes.persistence.entity;
 
-
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -11,9 +10,8 @@ public class DocenteEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long codigo;
-    @Column(length = 150,  nullable = false)
+    @Column(length = 40,  nullable = false)
     private String nombre;
-    @Column(length = 40, unique = true,nullable = false)
-    private String asignatura;
-
+    @Column(name="codigo_curso", precision = 3, unique = true, nullable = false)
+    private Integer codigoCurso;
 }
