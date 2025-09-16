@@ -11,9 +11,9 @@ public class UsuarioEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long codigo;
     @Column(length = 150,  nullable = false)
-    private String nombre;
+    private String asignatura;
     @Column(length = 40, unique = true,nullable = false)
-    private String correo;
+    private String nombre;
     @Column( length = 40, nullable = false)
     private String contraseña;
     @Column( length = 40, nullable = false)

@@ -9,7 +9,7 @@ import java.time.LocalDate;
 
 public record ModUsuarioDto (
         @NotBlank(message = "El nombre del usuario esta vacio")
-        String name,
+        String nombre,
         @NotBlank(message = "El correo del usuario esta vacio")
         String correo,
      @NotBlank(message = "El contraseña del usuario esta vacio")
