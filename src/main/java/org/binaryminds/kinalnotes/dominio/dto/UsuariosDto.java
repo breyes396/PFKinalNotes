@@ -1,9 +1,10 @@
-package org.binaryminds.kinalnotes.dominio;
+package org.binaryminds.kinalnotes.dominio.dto;
 
+
+import org.binaryminds.kinalnotes.dominio.User;
 
 public record UsuariosDto(
     Long codigo,
-    String password,
     String name,
     String mail,
     User role
