@@ -1,5 +1,6 @@
 package org.binaryminds.kinalnotes.web.mapper;
 
+<<<<<<< HEAD
 import org.binaryminds.kinalnotes.dominio.ModUsuarioDto;
 import org.binaryminds.kinalnotes.dominio.UsuariosDto;
 import org.binaryminds.kinalnotes.dominio.dto.ModDocentesDto;
@@ -29,3 +30,7 @@ public interface DocentesMapper {
 
 }
 
+=======
+public interface DocentesMapper {
+}
+>>>>>>> 9bf5fbc72f5bfb0f2ca657d2f1236acd681ee4f0
