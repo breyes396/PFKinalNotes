@@ -18,13 +18,14 @@ public interface UsuarioMapper {
 
     @Mapping(source = "nombre" ,target = "name")
     @Mapping(source = "correo", target ="mail" )
+    @Mapping(source = "contrasena", target = "password")
     @Mapping(source = "rol", target = "role")
 
     public UsuariosDto toDto(UsuarioEntity Entity);
     public List<UsuariosDto> toDto(Iterable<UsuarioEntity> entities);
 
     @InheritInverseConfiguration
-    @Mapping(source = "role", target = "rol", qualifiedByName = "generarRol")
+    @Mapping(source = "role", target = "rol")
     UsuarioEntity toEntity(UsuariosDto usuariosDto);
 
     @Mapping(source = "nombre", target = "nombre")

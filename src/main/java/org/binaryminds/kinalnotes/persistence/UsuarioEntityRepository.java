@@ -37,7 +37,7 @@ public class UsuarioEntityRepository implements UsuariosRepository {
 
     @Override
     public UsuariosDto guardarUsuario(UsuariosDto usuariosDto) {
-        if (this.crudUsuarios.findByname(usuariosDto.name())!=null){
+        if (this.crudUsuarios.findByNombre(usuariosDto.name())!=null){
             throw new IllegalArgumentException("El usuario no puede ser registrado");
         }
         UsuarioEntity usuario = this.usuarioMapper.toEntity(usuariosDto);

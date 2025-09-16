@@ -5,5 +5,5 @@ import org.binaryminds.kinalnotes.persistence.entity.UsuarioEntity;
 import org.springframework.data.repository.CrudRepository;
 
 public interface CrudUsuariosEntity extends CrudRepository<UsuarioEntity, Long> {
-    UsuarioEntity findByname(String name);
+    UsuarioEntity findByNombre(String nombre);
 }
