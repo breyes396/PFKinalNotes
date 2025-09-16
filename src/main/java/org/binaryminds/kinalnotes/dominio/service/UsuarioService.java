@@ -1,36 +1,39 @@
 package org.binaryminds.kinalnotes.dominio.service;
 
 import org.binaryminds.kinalnotes.dominio.dto.ModUsuarioDto;
-import org.binaryminds.kinalnotes.dominio.dto.UsuariosDto;
-import org.binaryminds.kinalnotes.dominio.repository.UsuariosRepository;
+import org.binaryminds.kinalnotes.dominio.dto.UsuarioDto;
+import org.binaryminds.kinalnotes.dominio.repository.UsuarioRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class UsuarioService {
-    private final UsuariosRepository usuariosRepository;
+    private final UsuarioRepository usuarioRepository;
 
-    public UsuarioService(UsuariosRepository usuariosRepository) {
-        this.usuariosRepository = usuariosRepository;
+    public UsuarioService(UsuarioRepository usuarioRepository) {
+        this.usuarioRepository = usuarioRepository;
     }
 
-    public List<UsuariosDto> obtenerTodo(){
-        return this.usuariosRepository.obtenerTodo();
+    public List<UsuarioDto> obtenerTodo(){
+        return this.usuarioRepository.obtenerTodo();
     }
 
-    public UsuariosDto obtenerUsuarioPorId(Long codigo){
-        return this.usuariosRepository.obtenerUsuarioPorId(codigo);
+    public UsuarioDto obtenerUsuarioPorId(Long codigo){
+        return this.usuarioRepository.obtenerUsuarioPorId(codigo);
     }
 
-    public UsuariosDto guardarUsuario(UsuariosDto usuariosDto){
-        return this.usuariosRepository.guardarUsuario(usuariosDto);
+    public UsuarioDto guardarUsuario(UsuarioDto usuarioDto){
+        return this.usuarioRepository.guardarUsuario(usuarioDto);
     }
-    public UsuariosDto actualizarUsuario(Long codigo, ModUsuarioDto modUsuarioDto){
-        return this.usuariosRepository.actualizarUsuario(codigo, modUsuarioDto);
+    public UsuarioDto actualizarUsuario(Long codigo, ModUsuarioDto modUsuarioDto){
+        return this.usuarioRepository.actualizarUsuario(codigo, modUsuarioDto);
     }
     public void eliminarUsuario(Long codigo){
-       this.usuariosRepository.eliminarUsuario(codigo);
+       this.usuarioRepository.eliminarUsuario(codigo);
     }
 
+    public UsuarioDto obtenerUsuarioPorCorreo(String correo) {
+        return this.usuarioRepository.obtenerUsuarioPorCorreo(correo);
+    }
 }
