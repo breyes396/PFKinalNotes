@@ -21,7 +21,7 @@ public interface DocenteMapper {
     @InheritInverseConfiguration
     DocenteEntity toEntity(DocenteDto docenteDto);
 
-    @Mapping(source = "nombre", target = "nombre")
-    @Mapping(source = "codigoCurso", target = "codigo_curso")
+    @Mapping(source = "name", target = "nombre")
+    @Mapping(source = "codigo_curso", target = "codigoCurso")
     void modificarEntityFromDto(ModDocenteDto modDocenteDto, @MappingTarget DocenteEntity docenteEntity);
 }
