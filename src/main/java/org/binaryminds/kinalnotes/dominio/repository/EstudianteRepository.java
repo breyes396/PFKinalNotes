@@ -1,5 +1,8 @@
 package org.binaryminds.kinalnotes.dominio.repository;
 
+import org.binaryminds.kinalnotes.dominio.dto.ModEstudianteDto;
+import org.binaryminds.kinalnotes.dominio.dto.EstudianteDto;
+
 import java.util.List;
 
 public interface EstudianteRepository {

@@ -1,5 +1,7 @@
 package org.binaryminds.kinalnotes.dominio.service;
 
+import org.binaryminds.kinalnotes.dominio.dto.EstudianteDto;
+import org.binaryminds.kinalnotes.dominio.dto.ModEstudianteDto;
 import org.binaryminds.kinalnotes.dominio.repository.EstudianteRepository;
 import org.springframework.stereotype.Service;
 
