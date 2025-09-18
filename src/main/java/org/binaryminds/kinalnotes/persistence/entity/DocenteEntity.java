@@ -13,5 +13,7 @@ public class DocenteEntity {
     @Column(length = 40,  nullable = false)
     private String nombre;
     @Column(name="codigo_curso", precision = 3, unique = true, nullable = false)
-    private Integer codigoCurso;
+    private Long codigoCurso;
+    @Column(name="codigo_usuario", precision = 3, unique = true, nullable = false)
+    private Long codigoUsuario;
 }

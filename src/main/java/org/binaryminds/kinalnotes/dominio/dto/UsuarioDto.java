@@ -12,3 +12,4 @@ public record UsuarioDto(
         Role role
 ) {
 }
+
