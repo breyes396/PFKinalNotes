@@ -25,11 +25,11 @@ public class LoginController {
     @PostMapping("/login")
     @Operation(summary = "Iniciar sesión", description = "Autentica un usuario con email y contraseña")
     public ResponseEntity<?> login(
-            @RequestParam String email,
+            @RequestParam String mail,
             @RequestParam String password) {
 
         try {
-            UsuarioDto usuario = usuarioService.obtenerUsuarioPorCorreo(email);
+            UsuarioDto usuario = usuarioService.obtenerUsuarioPorCorreo(mail);
 
             if (usuario == null) {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED)

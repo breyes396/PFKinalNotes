@@ -20,8 +20,8 @@ public class EstudianteEntity {
     @ManyToMany
     @JoinTable(
             name = "estudiante_curso", // Nombre de la tabla intermedia que JPA generará
-            joinColumns = @JoinColumn(name = "id_estudiante"),
-            inverseJoinColumns = @JoinColumn(name = "id_curso")
+            joinColumns = @JoinColumn(name = "codigo_estudiante"),
+            inverseJoinColumns = @JoinColumn(name = "codigo_curso")
     )
     private List<CursoEntity> cursos;
     @OneToOne
