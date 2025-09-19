@@ -2,6 +2,10 @@ package org.binaryminds.kinalnotes.persistence;
 
 import org.binaryminds.kinalnotes.dominio.dto.DocenteDto;
 import org.binaryminds.kinalnotes.dominio.dto.ModDocenteDto;
+import org.binaryminds.kinalnotes.dominio.exception.DocenteNoExisteException;
+import org.binaryminds.kinalnotes.dominio.exception.DocenteYaExisteException;
+import org.binaryminds.kinalnotes.dominio.exception.EstudianteNoExisteException;
+import org.binaryminds.kinalnotes.dominio.exception.EstudianteYaExisteException;
 import org.binaryminds.kinalnotes.dominio.repository.DocenteRepository;
 import org.binaryminds.kinalnotes.persistence.crud.CrudDocenteEntity;
 import org.binaryminds.kinalnotes.persistence.entity.DocenteEntity;
@@ -29,21 +33,29 @@ public class DocenteEntityRepository implements DocenteRepository {
     @Override
     public DocenteDto obtenerDocentePorId(Long id) {
         if (id == null) {
-            throw new IllegalArgumentException("El id no puede ser nulo");
+            throw new DocenteNoExisteException(id);
         }
         return this.docenteMapper.toDto(this.crudDocente.findById(id).orElse(null));
     }
 
     @Override
     public DocenteDto guardarDocente(DocenteDto docenteDto) {
-        DocenteEntity docente = this.docenteMapper.toEntity(docenteDto);
-        this.crudDocente.save(docente);
-        return this.docenteMapper.toDto(docente);
+        if (this.crudDocente.findFirstByNombre(docenteDto.name()) != null) {
+            throw new DocenteYaExisteException(docenteDto.name());
+        } else {
+            DocenteEntity docente = this.docenteMapper.toEntity(docenteDto);
+            this.crudDocente.save(docente);
+            return this.docenteMapper.toDto(docente);
+        }
+
     }
 
     @Override
     public DocenteDto actualizarDocente(Long codigo, ModDocenteDto modDocenteDto) {
         DocenteEntity docente = this.crudDocente.findById(codigo).orElse(null);
+        if (docente == null) {
+            throw new DocenteNoExisteException(codigo);
+        }
         this.docenteMapper.modificarEntityFromDto(modDocenteDto, docente);
         return this.docenteMapper.toDto(this.crudDocente.save(docente));
     }
@@ -52,7 +64,7 @@ public class DocenteEntityRepository implements DocenteRepository {
     public void eliminarDocente(Long codigo) {
         DocenteEntity docenteEntity = this.crudDocente.findById(codigo).orElse(null);
         if (docenteEntity == null) {
-            throw new IllegalArgumentException("El docente no puede ser eliminado");
+            throw new DocenteNoExisteException(codigo);
         } else {
             this.crudDocente.deleteById(codigo);
         }
@@ -61,7 +73,7 @@ public class DocenteEntityRepository implements DocenteRepository {
     @Override
     public DocenteDto obtenerDocentePorNombre(String nombre) {
         if (nombre == null) {
-            throw new IllegalArgumentException("El nombre no puede ser nulo");
+            throw new IllegalArgumentException("El nombre no existe en el sistema");
         }
         return this.docenteMapper.toDto(this.crudDocente.findByNombre(nombre).orElse(null));
     }
