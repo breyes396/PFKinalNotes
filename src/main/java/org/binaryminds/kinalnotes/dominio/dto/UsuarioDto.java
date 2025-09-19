@@ -9,7 +9,6 @@ public record UsuarioDto(
         String mail,
         @NotBlank(message = "La contraseña es obligatoria")
         String password,
-        @NotBlank(message = "El rol es obligatorio")
         Role role
 ) {
 }
