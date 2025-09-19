@@ -43,7 +43,7 @@ public class UsuarioEntityRepository implements UsuarioRepository {
             throw new UsuarioYaExisteException(usuarioDto.mail());
         }
         UsuarioEntity usuario = this.usuarioMapper.toEntity(usuarioDto);
-        usuario.setRol("STUDENT");
+        //usuario.setRol("STUDENT");
         this.crudUsuario.save(usuario);
         return this.usuarioMapper.toDto(usuario);
     }
