@@ -8,6 +8,7 @@ import org.binaryminds.kinalnotes.persistence.entity.EstudianteEntity;
 import org.binaryminds.kinalnotes.web.mapper.EstudianteMapper;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 @Repository
 public class EstudianteEntityRepository implements EstudianteRepository{
 
@@ -52,7 +53,7 @@ public class EstudianteEntityRepository implements EstudianteRepository{
         if (estudianteEntity == null){
             throw new IllegalArgumentException("El estudiante no puede ser eliminado");
         } else {
-            this.crudEstudiante.deleteById(codigo);
+            this.crudEstudiante.deleteById(id);
         }
     }
 
