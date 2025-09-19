@@ -46,6 +46,7 @@ public class UsuarioController {
     @PostMapping
     public ResponseEntity<UsuarioDto> guardarUsuario(@RequestBody UsuarioDto usuarioDto){
         return ResponseEntity.status(HttpStatus.CREATED).body(this.usuarioService.guardarUsuario(usuarioDto));
+
     }
 
     @PutMapping("{codigo}")
