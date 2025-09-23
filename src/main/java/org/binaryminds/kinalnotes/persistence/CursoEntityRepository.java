@@ -4,12 +4,9 @@ import org.binaryminds.kinalnotes.dominio.dto.CursoDto;
 import org.binaryminds.kinalnotes.dominio.dto.ModCursoDto;
 import org.binaryminds.kinalnotes.dominio.exception.CursoNoExisteException;
 import org.binaryminds.kinalnotes.dominio.exception.CursoYaExisteException;
-import org.binaryminds.kinalnotes.dominio.exception.DocenteNoExisteException;
-import org.binaryminds.kinalnotes.dominio.exception.DocenteYaExisteException;
 import org.binaryminds.kinalnotes.dominio.repository.CursoRepository;
 import org.binaryminds.kinalnotes.persistence.crud.CrudCursoEntity;
 import org.binaryminds.kinalnotes.persistence.entity.CursoEntity;
-import org.binaryminds.kinalnotes.persistence.entity.DocenteEntity;
 import org.binaryminds.kinalnotes.web.mapper.CursoMapper;
 import org.springframework.stereotype.Repository;
 
@@ -17,7 +14,7 @@ import java.util.List;
 @Repository
 public class CursoEntityRepository implements CursoRepository {
 
-    private final CurdCursoEntity crudCurso;
+    private final CrudCursoEntity crudCurso;
     private final CursoMapper cursoMapper;
 
     public CursoEntityRepository(CrudCursoEntity crudCurso, CursoMapper cursoMapper){
@@ -32,7 +29,7 @@ public class CursoEntityRepository implements CursoRepository {
 
     @Override
     public CursoDto obtenerCursoPorCodigo(Long codigo) {
-        return this.cursoMapper.toDto(this.crudCurso.findById(Id).orElse(null));
+        return this.cursoMapper.toDto(this.crudCurso.findById(codigo).orElse(null));
     }
 
     @Override

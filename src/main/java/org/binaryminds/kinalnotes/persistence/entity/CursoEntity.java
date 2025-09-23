@@ -16,11 +16,6 @@ public class CursoEntity {
     private String nombre;
     @Column(length = 40, nullable = false)
     private String grado;
-    @ManyToMany
-    @JoinTable(
-            name = "estudiante_curso",
-            joinColumns = @JoinColumn(name = "codigo_estudiante"),
-            inverseJoinColumns = @JoinColumn(name = "codigo_curso")
-    )
+    @ManyToMany(mappedBy = "cursos")
     private List<EstudianteEntity> estudiantes;
 }

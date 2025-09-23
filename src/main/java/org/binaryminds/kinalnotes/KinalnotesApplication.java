@@ -4,8 +4,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class KinalNotesApplication {
+public class KinalnotesApplication {
     public static void main(String[] args) {
-        SpringApplication.run(KinalNotesApplication.class, args);
+        SpringApplication.run(KinalnotesApplication.class, args);
     }
 }

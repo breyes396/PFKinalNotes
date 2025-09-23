@@ -35,11 +35,11 @@ public class DocenteController {
             summary = "Obtener un docente a partir de su identificador",
             description = "Retorna el docente que coincida con el identificador enviado",
             responses = {
-                    @ApiResponse(responseCode = "200", description = "Docente fue encontrado con éxito"),
+                    @ApiResponse(responseCode = "200", description = "Docente fue encontrado con exito"),
                     @ApiResponse(responseCode = "404", description = "Docente no encontrado", content = @Content)
             }
     )
-    public ResponseEntity<DocenteDto> obtenerDocentePorId(@Parameter(description = "Identificador del docente a recuperar", example = "5") @PathVariable Long codigo){
+    public ResponseEntity<DocenteDto> obtenerDocentePorId(@Parameter(description = "Identificador de el docente a recuperar", example = "5")@PathVariable Long codigo){
         return ResponseEntity.ok(this.docenteService.obtenerDocentePorId(codigo));
     }
 
@@ -59,3 +59,4 @@ public class DocenteController {
         return ResponseEntity.ok().build();
     }
 }
+

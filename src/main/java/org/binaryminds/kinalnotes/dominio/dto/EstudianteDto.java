@@ -11,6 +11,7 @@ public record EstudianteDto(
         @NotBlank(message = "El apellido es obligatorio")
         String lastname,
         List<Long> courses,
+        @NotBlank(message = "El estudiante debe tener un usuario")
         Long codigo_usuario
 ) {
 }

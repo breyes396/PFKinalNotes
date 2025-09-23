@@ -1,16 +1,12 @@
 package org.binaryminds.kinalnotes.dominio.dto;
 
 import jakarta.validation.constraints.NotBlank;
-import org.binaryminds.kinalnotes.dominio.Role;
 
-public record UsuarioDto(
-        Long codigo,
+public record LoginRequestDto(
         @NotBlank(message = "El email es obligatorio")
         String mail,
         @NotBlank(message = "La contraseña es obligatoria")
-        String password,
-        @NotBlank(message = "El rol es obligatorio (ADMIN, STUDENT o TEACHER)")
-        Role role
+        String password
 ) {
 }
 

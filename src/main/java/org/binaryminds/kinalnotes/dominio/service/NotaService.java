@@ -27,7 +27,7 @@ public class NotaService {
         return this.notaRepository.guardarNota(notaDto);
     }
 
-    public NotaDto actualizarDto(Long codigo, ModNotaDto modNotaDto){
+    public NotaDto actualizarNota(Long codigo, ModNotaDto modNotaDto){
         return this.notaRepository.actualizarNota(codigo, modNotaDto);
     }
 
@@ -35,7 +35,7 @@ public class NotaService {
         this.notaRepository.eliminarNota(codigo);
     }
 
-    public NotaDto obtenerNotaPorNombre(String nombre){
-        return this.notaRepository.obtenerNotaPorNombre(nombre);
+    public NotaDto obtenerNotaPorCalificacion(Integer calificacion) {
+        return this.notaRepository.obtenerNotaPorCalificacion(calificacion);
     }
 }

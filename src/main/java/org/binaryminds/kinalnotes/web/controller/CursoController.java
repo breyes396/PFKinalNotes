@@ -40,7 +40,7 @@ public class CursoController {
             }
     )
     public ResponseEntity<CursoDto> obtenerCursoPorId(@Parameter(description = "Identificador del curso a recuperar", example = "5") @PathVariable Long codigo){
-        return ResponseEntity.ok(this.cursoService.obtenerCursoPorId(codigo));
+        return ResponseEntity.ok(this.cursoService.obtenerCursoPorCodigo(codigo));
     }
 
     @PostMapping

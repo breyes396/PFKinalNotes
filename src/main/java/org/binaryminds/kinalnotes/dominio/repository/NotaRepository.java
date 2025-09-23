@@ -11,5 +11,5 @@ public interface NotaRepository {
     NotaDto guardarNota(NotaDto notaDto);
     NotaDto actualizarNota(Long codigo, ModNotaDto modNotaDto);
     void eliminarNota(Long codigo);
-    NotaDto obtenerNotaPorNombre(String nombre);
+    NotaDto obtenerNotaPorCalificacion(Integer calificacion);
 }

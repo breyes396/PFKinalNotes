@@ -2,6 +2,8 @@ package org.binaryminds.kinalnotes.web.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import org.binaryminds.kinalnotes.dominio.dto.LoginRequestDto;
 import org.binaryminds.kinalnotes.dominio.dto.UsuarioDto;
 import org.binaryminds.kinalnotes.dominio.service.UsuarioService;
 import org.springframework.http.HttpStatus;
@@ -24,19 +26,16 @@ public class LoginController {
 
     @PostMapping("/login")
     @Operation(summary = "Iniciar sesión", description = "Autentica un usuario con email y contraseña")
-    public ResponseEntity<?> login(
-            @RequestParam String mail,
-            @RequestParam String password) {
-
+    public ResponseEntity<?> login(@RequestBody @Valid LoginRequestDto request) {
         try {
-            UsuarioDto usuario = usuarioService.obtenerUsuarioPorCorreo(mail);
+            UsuarioDto usuario = usuarioService.obtenerUsuarioPorCorreo(request.mail());
 
             if (usuario == null) {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                         .body("Usuario no encontrado");
             }
 
-            if (!usuario.password().equals(password)) {
+            if (!usuario.password().equals(request.password())) {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                         .body("Contraseña incorrecta");
             }
