@@ -1,26 +1,30 @@
-insert ignore into Usuarios(correo, contrasena , rol)
-values ('wilsonDiaz@gmail.com','213fdsfsdfsdk','ESTUDIANTE');
-insert ignore into Usuarios(correo, contrasena , rol)
-values ('jeffersonDiaz@gmail.com','213fasfdsa','DOCENTE');
-insert ignore into Usuarios(correo, contrasena , rol)
-values ('matiasITcotoya@gmail.com','wertwer23jk4bi32uh4','ADMINISTRADOR');
-insert ignore into Usuarios(correo, contrasena , rol)
-values ('saulSatbaja@gmail.com','vbdrtgwer3','ESTUDIANTE');
-insert ignore into Usuarios(correo, contrasena , rol)
-values ('wilsonMorales@gmail.com','tyber234rr','DOCENTE');
-insert ignore into Usuarios(correo, contrasena , rol)
-values ('angelTucubal@gmail.com','it55','DOCENTE');
-insert ignore into Usuarios(correo, contrasena , rol)
-values ('BillyDiaz@gmail.com','dsgvo978o8','ADMINISTRADOR');
-insert ignore into Usuarios(correo, contrasena , rol)
-values ('wilsonYaxon@gmail.com','bvnrt67','ESTUDIANTE');
-insert ignore into Usuarios(correo, contrasena , rol)
-values ('javierDiaz@gmail.com','bfdbdsgeq34','DOCENTE');
-insert ignore into Usuarios(correo, contrasena , rol)
-values ('saulSipack@gmail.com','fdg2easd','ADMINISTRADOR');
-insert ignore into Usuarios(correo, contrasena , rol)
-values ('matiasTuvubal@gmail.com','234fs','ESTUDIANTE');
-insert ignore into Usuarios(correo, contrasena , rol)
-values ('ricardoLucero@gmail.com','FDGFDG','DOCENTE');
-
-
+insert ignore into Usuarios(correo, password , role)
+values ('wilsonDiaz@gmail.com','12345678','ESTUDIANTE');
+insert ignore into Usuarios(correo, password , role)
+values ('jeffersonDiaz@gmail.com','12345678','PROFESOR');
+insert ignore into Usuarios(correo, password , role)
+values ('matiasITcotoya@gmail.com','12345678','ADMINISTRADOR');
+insert ignore into Usuarios(correo, password , role)
+values ('saulSatbaja@gmail.com','12345678','ESTUDIANTE');
+insert ignore into Usuarios(correo, password , role)
+values ('wilsonMorales@gmail.com','12345678','PROFESOR');
+insert ignore into Usuarios(correo, password , role)
+values ('wilsonSosa@gmail.com','12345678','ADMINISTRADOR');
+insert ignore into Usuarios(correo, password , role)
+values ('wilsonDiaz@gmail.com','12345678','ESTUDIANTE');
+insert ignore into Usuarios(correo, password , role)
+values ('angelTucubal@gmail.com','12345678','PROFESOR');
+insert ignore into Usuarios(correo, password , role)
+values ('BillyDiaz@gmail.com','12345678','ADMINISTRADOR');
+insert ignore into Usuarios(correo, password , role)
+values ('wilsonYaxon@gmail.com','12345678','ESTUDIANTE');
+insert ignore into Usuarios(correo, password , role)
+values ('javierDiaz@gmail.com','12345678','PROFESOR');
+insert ignore into Usuarios(correo, password , role)
+values ('saulSipack@gmail.com','12345678','ADMINISTRADOR');
+insert ignore into Usuarios(correo, password , role)
+values ('matiasTuvubal@gmail.com','12345678','ESTUDIANTE');
+insert ignore into Usuarios(correo, password , role)
+values ('ricardoLucero@gmail.com','12345678','PROFESOR');
+insert ignore into Usuarios(correo, password , role)
+values ('BillyYaxon@gmail.com','12345678','ADMINISTRADOR');

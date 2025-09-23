@@ -75,7 +75,9 @@ public class UsuarioEntityRepository implements UsuarioRepository {
         if(correo == null){
             throw new IllegalArgumentException("El correo no existe");
         } else {
-            return this.usuarioMapper.toDto(this.crudUsuario.findByCorreo(correo).orElse(null));
+            UsuarioEntity usuario=this.crudUsuario.findByCorreo(correo).orElse(null);
+            System.out.println("usario encontrado: "+usuario );
+            return this.usuarioMapper.toDto(usuario);
         }
     }
 }
