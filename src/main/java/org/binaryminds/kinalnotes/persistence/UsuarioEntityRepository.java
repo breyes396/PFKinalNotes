@@ -43,7 +43,7 @@ public class UsuarioEntityRepository implements UsuarioRepository {
             throw new UsuarioYaExisteException(usuarioDto.mail());
         }
         UsuarioEntity usuario = this.usuarioMapper.toEntity(usuarioDto);
-        usuario.setRol("STUDENT");
+        //usuario.setRol("STUDENT");
         this.crudUsuario.save(usuario);
         return this.usuarioMapper.toDto(usuario);
     }
@@ -51,8 +51,13 @@ public class UsuarioEntityRepository implements UsuarioRepository {
     @Override
     public UsuarioDto actualizarUsuario(Long codigo, ModUsuarioDto modUsuarioDto) {
         UsuarioEntity usuario = this.crudUsuario.findById(codigo).orElse(null);
-        this.usuarioMapper.modificarEntityFromDto(modUsuarioDto, usuario);
-        return this.usuarioMapper.toDto(this.crudUsuario.save(usuario));
+        if (usuario==null){
+            throw new UsuarioNoExisteException(codigo);
+        } else {
+            this.usuarioMapper.modificarEntityFromDto(modUsuarioDto, usuario);
+            return this.usuarioMapper.toDto(this.crudUsuario.save(usuario));
+        }
+
     }
 
     @Override
@@ -68,7 +73,7 @@ public class UsuarioEntityRepository implements UsuarioRepository {
     @Override
     public UsuarioDto obtenerUsuarioPorCorreo(String correo) {
         if(correo == null){
-            throw new IllegalArgumentException("El correo no puede ser nulo");
+            throw new IllegalArgumentException("El correo no existe");
         } else {
             UsuarioEntity usuario=this.crudUsuario.findByCorreo(correo).orElse(null);
             System.out.println("usario encontrado: "+usuario );

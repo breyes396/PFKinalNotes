@@ -8,5 +8,4 @@ public class KinalNotesApplication {
     public static void main(String[] args) {
         SpringApplication.run(KinalNotesApplication.class, args);
     }
-
 }

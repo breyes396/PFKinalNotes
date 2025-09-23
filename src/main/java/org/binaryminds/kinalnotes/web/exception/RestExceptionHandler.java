@@ -35,6 +35,18 @@ public class RestExceptionHandler {
         return ResponseEntity.badRequest().body(error);
     }
 
+    @ExceptionHandler(EstudianteYaExisteException.class)
+    public ResponseEntity<Error> handlerException(EstudianteYaExisteException ex){
+        Error error = new Error("Estudiante-ya-existe", ex.getMessage());
+        return ResponseEntity.badRequest().body(error);
+    }
+
+    @ExceptionHandler(EstudianteNoExisteException.class)
+    public ResponseEntity<Error> handlerException(EstudianteNoExisteException ex){
+        Error error = new Error("Estudiante-no-existe", ex.getMessage());
+        return ResponseEntity.badRequest().body(error);
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<List<Error>> handlerException(MethodArgumentNotValidException ex){
         List<Error> errores = new ArrayList<>();

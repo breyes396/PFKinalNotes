@@ -16,5 +16,4 @@ public class UsuarioEntity {
     private String contrasena;
     @Column(length = 40, nullable = false)
     private String rol;
-
 }

@@ -1,4 +1,5 @@
 package org.binaryminds.kinalnotes.persistence.entity;
+
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -17,10 +18,9 @@ public class CursoEntity {
     private String grado;
     @ManyToMany
     @JoinTable(
-            name = "estudiante_curso", // Nombre de la tabla intermedia que JPA generará
-            joinColumns = @JoinColumn(name = "codigo_curso"),
-            inverseJoinColumns = @JoinColumn(name = "codigo_estudiante")
+            name = "estudiante_curso",
+            joinColumns = @JoinColumn(name = "codigo_estudiante"),
+            inverseJoinColumns = @JoinColumn(name = "codigo_curso")
     )
     private List<EstudianteEntity> estudiantes;
-
 }
