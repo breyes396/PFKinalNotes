@@ -17,7 +17,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/v1/cursos")
-@Tag(name = "Cursos", description = "OPERACIONES (CRUD) sobre los cursos disponibles de KinalNotes")
+@Tag(name = "Cursos", description = "Operaciones (CRUD) sobre los cursos disponibles de KinalNotes")
 public class CursoController {
     private final CursoService cursoService;
 
@@ -26,6 +26,14 @@ public class CursoController {
     }
 
     @GetMapping
+    @Operation(
+            summary = "Obtener todos los cursos",
+            description = "Retorna todos los cursos existentes",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Cursos encontrados con exito"),
+                    @ApiResponse(responseCode = "404", description = "Cursos no encontrados", content = @Content)
+            }
+    )
     public ResponseEntity<List<CursoDto>> obtenerTodo(){
         return ResponseEntity.ok(this.cursoService.obtenerTodo());
     }
@@ -36,7 +44,7 @@ public class CursoController {
             description = "Retorna el curso que coincida con el identificador enviado",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Curso fue encontrado con éxito"),
-                    @ApiResponse(responseCode = "404", description = "Docente no encontrado", content = @Content)
+                    @ApiResponse(responseCode = "404", description = "Curso no encontrado", content = @Content)
             }
     )
     public ResponseEntity<CursoDto> obtenerCursoPorId(@Parameter(description = "Identificador del curso a recuperar", example = "5") @PathVariable Long codigo){
@@ -44,17 +52,41 @@ public class CursoController {
     }
 
     @PostMapping
+    @Operation(
+            summary = "Agrega un curso",
+            description = "Agrega un curso nuevo al sistema",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Curso agregado con exito"),
+                    @ApiResponse(responseCode = "404", description = "Curso no agregado", content = @Content)
+            }
+    )
     public ResponseEntity<CursoDto> guardarCurso(@RequestBody @Valid CursoDto cursoDto){
         return ResponseEntity.status(HttpStatus.CREATED).body(this.cursoService.guardarCurso(cursoDto));
     }
 
     @PutMapping("{codigo}")
-    public ResponseEntity<CursoDto> actualizarCurso(@PathVariable Long codigo, @RequestBody @Valid ModCursoDto modCursoDto){
+    @Operation(
+            summary = "Actualizar un curso existente",
+            description = "Actualiza un curso del sistema ya existente",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Curso actualizado con exito"),
+                    @ApiResponse(responseCode = "404", description = "Curso no encontrado o no actualizado", content = @Content)
+            }
+    )
+    public ResponseEntity<CursoDto> actualizarCurso(@Parameter(description = "Identificador de el curso a actualizar", example = "5")@PathVariable Long codigo, @RequestBody @Valid ModCursoDto modCursoDto){
         return ResponseEntity.ok(this.cursoService.actualizarCurso(codigo, modCursoDto));
     }
 
     @DeleteMapping("{codigo}")
-    public ResponseEntity<CursoDto> eliminarCurso(@PathVariable Long codigo){
+    @Operation(
+            summary = "Eliminar un curso existente",
+            description = "Elimina un curso del sistema ya existente",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Curso eliminado con exito"),
+                    @ApiResponse(responseCode = "404", description = "Curso no encontrado o no eliminado", content = @Content)
+            }
+    )
+    public ResponseEntity<CursoDto> eliminarCurso(@Parameter(description = "Identificador de el curso a eliminar", example = "5")@PathVariable Long codigo){
         this.cursoService.eliminarCurso(codigo);
         return ResponseEntity.ok().build();
     }
