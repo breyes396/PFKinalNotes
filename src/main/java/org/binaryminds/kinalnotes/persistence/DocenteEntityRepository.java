@@ -4,8 +4,6 @@ import org.binaryminds.kinalnotes.dominio.dto.DocenteDto;
 import org.binaryminds.kinalnotes.dominio.dto.ModDocenteDto;
 import org.binaryminds.kinalnotes.dominio.exception.DocenteNoExisteException;
 import org.binaryminds.kinalnotes.dominio.exception.DocenteYaExisteException;
-import org.binaryminds.kinalnotes.dominio.exception.EstudianteNoExisteException;
-import org.binaryminds.kinalnotes.dominio.exception.EstudianteYaExisteException;
 import org.binaryminds.kinalnotes.dominio.repository.DocenteRepository;
 import org.binaryminds.kinalnotes.persistence.crud.CrudDocenteEntity;
 import org.binaryminds.kinalnotes.persistence.entity.DocenteEntity;
