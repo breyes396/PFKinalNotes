@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <title>Registro - Kinal Notes</title>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/primeflex.css"/>
+    <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/themes/primeone-dark.css"/>
+</h:head>
+<h:body style="background:#111; color:#eee; font-family:'Inter',Arial,sans-serif;">
+<div class="flex align-items-center justify-content-center" style="min-height:100vh;">
+    <div class="surface-card p-4 shadow-2 border-round w-full md:w-5" style="max-width:560px;">
+        <h2 class="text-center" style="margin:0 0 1.2rem;">Crear cuenta</h2>
+        <h:form id="frmRegistro" prependId="false">
+            <p:messages id="msgs" showDetail="true" closable="true"/>
+            <div class="grid formgrid">
+                <div class="col-12 md:col-6 field">
+                    <p:outputLabel for="email" value="Correo"/>
+                    <p:inputText id="email" value="#{registroView.email}" required="true" placeholder="correo@dominio.com" styleClass="w-full"/>
+                </div>
+                <div class="col-12 md:col-6 field">
+                    <p:outputLabel for="password" value="Contraseña"/>
+                    <p:password id="password" value="#{registroView.password}" feedback="false" required="true" styleClass="w-full"/>
+                </div>
+                <div class="col-12 md:col-6 field">
+                    <p:outputLabel for="rol" value="Rol"/>
+                    <p:selectOneMenu id="rol" value="#{registroView.role}" styleClass="w-full" required="true">
+                        <f:selectItem itemLabel="Seleccione" itemValue=""/>
+                        <f:selectItems value="#{registroView.rolesPermitidos}" var="r" itemLabel="#{registroView.roleLabel(r)}" itemValue="#{r}"/>
+                        <p:ajax update="panelExtra"/>
+                    </p:selectOneMenu>
+                </div>
+            </div>
+            <p:outputPanel id="panelExtra">
+                <div class="grid formgrid" style="margin-top:1rem;">
+                    <h:panelGroup layout="block" styleClass="col-12 md:col-6 field" rendered="#{registroView.student or registroView.teacher}">
+                        <p:outputLabel for="nombre" value="Nombre"/>
+                        <p:inputText id="nombre" value="#{registroView.nombre}" styleClass="w-full"/>
+                    </h:panelGroup>
+                    <h:panelGroup layout="block" styleClass="col-12 md:col-6 field" rendered="#{registroView.student}">
+                        <p:outputLabel for="apellido" value="Apellido"/>
+                        <p:inputText id="apellido" value="#{registroView.apellido}" styleClass="w-full"/>
+                    </h:panelGroup>
+                    <h:panelGroup layout="block" styleClass="col-12 md:col-6 field" rendered="#{registroView.teacher}">
+                        <p:outputLabel for="curso" value="Curso disponible"/>
+                        <p:selectOneMenu id="curso" value="#{registroView.cursoSeleccionado}" styleClass="w-full">
+                            <f:selectItem itemLabel="Seleccione" itemValue=""/>
+                            <f:selectItems value="#{registroView.cursosSelectDocente}"/>
+                        </p:selectOneMenu>
+                    </h:panelGroup>
+                </div>
+                <h:panelGroup rendered="#{registroView.teacher and empty registroView.cursosSelectDocente}" style="color:#f87171; font-size:0.85rem;">
+                    No hay cursos disponibles.
+                </h:panelGroup>
+            </p:outputPanel>
+            <p:commandButton value="Registrar" actionListener="#{registroView.registrar}" update="@form" icon="pi pi-user-plus" styleClass="w-full mt-4"/>
+            <div class="text-center mt-3" style="font-size:0.85rem;">
+                ¿Ya tienes cuenta?
+                <h:link outcome="/pages/login.xhtml" value="Inicia sesión" style="color:#60a5fa; margin-left:4px;"/>
+            </div>
+            <div class="text-center mt-2">
+                <h:link outcome="/index.xhtml" value="Volver al inicio" style="font-size:0.7rem; color:#999;"/>
+            </div>
+        </h:form>
+    </div>
+</div>
+</h:body>
+</html>

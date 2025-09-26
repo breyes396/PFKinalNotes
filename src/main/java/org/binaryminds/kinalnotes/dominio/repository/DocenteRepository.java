@@ -12,4 +12,5 @@ public interface DocenteRepository {
     DocenteDto actualizarDocente(Long codigo, ModDocenteDto modDocenteDto);
     void eliminarDocente(Long codigo);
     DocenteDto obtenerDocentePorNombre(String nombre);
+    DocenteDto obtenerDocentePorCodigoUsuario(Long codigoUsuario);
 }

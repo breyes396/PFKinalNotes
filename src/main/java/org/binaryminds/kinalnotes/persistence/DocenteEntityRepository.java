@@ -11,6 +11,7 @@ import org.binaryminds.kinalnotes.web.mapper.DocenteMapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class DocenteEntityRepository implements DocenteRepository {
@@ -74,5 +75,12 @@ public class DocenteEntityRepository implements DocenteRepository {
             throw new IllegalArgumentException("El nombre no existe en el sistema");
         }
         return this.docenteMapper.toDto(this.crudDocente.findByNombre(nombre).orElse(null));
+    }
+
+    @Override
+    public DocenteDto obtenerDocentePorCodigoUsuario(Long codigoUsuario) {
+        if (codigoUsuario == null) return null;
+        Optional<DocenteEntity> doc = this.crudDocente.findByCodigoUsuario(codigoUsuario);
+        return this.docenteMapper.toDto(doc.orElse(null));
     }
 }

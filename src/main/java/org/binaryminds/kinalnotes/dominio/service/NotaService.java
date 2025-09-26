@@ -38,4 +38,8 @@ public class NotaService {
     public NotaDto obtenerNotaPorCalificacion(Integer calificacion) {
         return this.notaRepository.obtenerNotaPorCalificacion(calificacion);
     }
+
+    public NotaDto obtenerNotaPorEstudianteCursoDocente(Long estudiante, Long curso, Long docente){
+        return this.notaRepository.obtenerNotaPorEstudianteCursoDocente(estudiante, curso, docente);
+    }
 }

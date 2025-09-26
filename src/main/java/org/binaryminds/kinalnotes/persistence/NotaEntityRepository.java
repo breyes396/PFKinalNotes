@@ -10,6 +10,7 @@ import org.binaryminds.kinalnotes.persistence.entity.NotaEntity;
 import org.binaryminds.kinalnotes.web.mapper.NotaMapper;
 import org.springframework.stereotype.Repository;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class NotaEntityRepository implements NotaRepository {
@@ -68,5 +69,12 @@ public class NotaEntityRepository implements NotaRepository {
             throw new CalificacionNoExisteException(calificacion);
         }
         return this.notaMapper.toDto(this.crudNota.findByCalificacion(calificacion).orElse(null));
+    }
+
+    @Override
+    public NotaDto obtenerNotaPorEstudianteCursoDocente(Long codigoEstudiante, Long codigoCurso, Long codigoDocente) {
+        if(codigoEstudiante==null || codigoCurso==null || codigoDocente==null) return null;
+        Optional<NotaEntity> nota = this.crudNota.findByCodigoEstudianteAndCodigoCursoAndCodigoDocente(codigoEstudiante,codigoCurso,codigoDocente);
+        return this.notaMapper.toDto(nota.orElse(null));
     }
 }

@@ -12,4 +12,5 @@ public interface NotaRepository {
     NotaDto actualizarNota(Long codigo, ModNotaDto modNotaDto);
     void eliminarNota(Long codigo);
     NotaDto obtenerNotaPorCalificacion(Integer calificacion);
+    NotaDto obtenerNotaPorEstudianteCursoDocente(Long codigoEstudiante, Long codigoCurso, Long codigoDocente);
 }

@@ -10,4 +10,5 @@ import java.util.Optional;
 public interface CrudNotaEntity extends CrudRepository<NotaEntity, Long> {
     NotaEntity findFirstByCalificacion(Integer calificacion);
     Optional<NotaEntity> findByCalificacion(Integer calificacion);
+    Optional<NotaEntity> findByCodigoEstudianteAndCodigoCursoAndCodigoDocente(Long codigoEstudiante, Long codigoCurso, Long codigoDocente);
 }
