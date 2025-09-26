@@ -1,6 +1,8 @@
 package org.binaryminds.kinalnotes.web.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.binaryminds.kinalnotes.dominio.dto.LoginRequestDto;
@@ -25,7 +27,14 @@ public class LoginController {
     }
 
     @PostMapping("/login")
-    @Operation(summary = "Iniciar sesión", description = "Autentica un usuario con email y contraseña")
+    @Operation(
+            summary = "Iniciar sesión",
+            description = "Autentica un usuario con email y contraseña",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Bienvenido al sistema "),
+                    @ApiResponse(responseCode = "404", description = "Error al auntenticarse, usuario o contrasena incorrectos", content = @Content)
+            }
+    )
     public ResponseEntity<?> login(@RequestBody @Valid LoginRequestDto request) {
         try {
             UsuarioDto usuario = usuarioService.obtenerUsuarioPorCorreo(request.mail());
@@ -61,7 +70,14 @@ public class LoginController {
     }
 
     @PostMapping("/registro")
-    @Operation(summary = "Registrar usuario", description = "Crea un nuevo usuario (alias de guardarUsuario)")
+    @Operation(
+            summary = "Registrar usuario",
+            description = "Crea un nuevo usuario (alias de guardarUsuario)",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Usuario agregado con exito "),
+                    @ApiResponse(responseCode = "404", description = "Error al agregar un usuario al sistema", content = @Content)
+            }
+    )
     public ResponseEntity<UsuarioDto> registro(@RequestBody UsuarioDto usuarioDto) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(usuarioService.guardarUsuario(usuarioDto));

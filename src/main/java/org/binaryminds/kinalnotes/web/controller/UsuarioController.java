@@ -17,7 +17,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/v1/usuarios")
-@Tag(name = "Usuarios", description = "OPERACIONES (CRUD) sobre los usuarios de KinalNotes")
+@Tag(name = "Usuarios", description = "Operaciones (CRUD) sobre los usuarios de KinalNotes")
 public class UsuarioController {
     private final UsuarioService usuarioService;
 
@@ -26,6 +26,14 @@ public class UsuarioController {
     }
 
     @GetMapping
+    @Operation(
+            summary = "Obtener todos los usuarios",
+            description = "Retorna todos los usuarios existentes",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Usuario encontrados con exito"),
+                    @ApiResponse(responseCode = "404", description = "Usuario no encontrados", content = @Content)
+            }
+    )
     public ResponseEntity<List<UsuarioDto>> obtenerTodo(){
         return ResponseEntity.ok(this.usuarioService.obtenerTodo());
     }
@@ -44,18 +52,42 @@ public class UsuarioController {
     }
 
     @PostMapping
+    @Operation(
+            summary = "Agrega un usuario",
+            description = "Agrega un usuario nuevo al sistema",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Usuario agregado con exito"),
+                    @ApiResponse(responseCode = "404", description = "Usuario no agregado", content = @Content)
+            }
+    )
     public ResponseEntity<UsuarioDto> guardarUsuario(@RequestBody @Valid UsuarioDto usuarioDto){
         return ResponseEntity.status(HttpStatus.CREATED).body(this.usuarioService.guardarUsuario(usuarioDto));
 
     }
 
     @PutMapping("{codigo}")
-    public ResponseEntity<UsuarioDto> actualizarUsuario(@PathVariable Long codigo, @RequestBody @Valid ModUsuarioDto modUsuarioDto){
+    @Operation(
+            summary = "Actualizar un usuario existente",
+            description = "Actualiza un usuario del sistema ya existente",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Usuario actualizado con exito"),
+                    @ApiResponse(responseCode = "404", description = "Usuario no encontrado o no actualizado", content = @Content)
+            }
+    )
+    public ResponseEntity<UsuarioDto> actualizarUsuario(@Parameter(description = "Identificador de el usuario a actualizar", example = "5")@PathVariable Long codigo, @RequestBody @Valid ModUsuarioDto modUsuarioDto){
         return ResponseEntity.ok(this.usuarioService.actualizarUsuario(codigo, modUsuarioDto));
     }
 
     @DeleteMapping("{codigo}")
-    public ResponseEntity<UsuarioDto> eliminarUsuario(@PathVariable Long codigo){
+    @Operation(
+            summary = "Eliminar un usuario existente",
+            description = "Elimina un usuario del sistema ya existente",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Usuario eliminado con exito"),
+                    @ApiResponse(responseCode = "404", description = "Usuario no encontrado o no eliminado", content = @Content)
+            }
+    )
+    public ResponseEntity<UsuarioDto> eliminarUsuario(@Parameter(description = "Identificador de el usuario a eliminar", example = "5")@PathVariable Long codigo){
         this.usuarioService.eliminarUsuario(codigo);
         return ResponseEntity.ok().build();
     }

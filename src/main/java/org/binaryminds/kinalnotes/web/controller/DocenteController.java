@@ -17,7 +17,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/v1/docentes")
-@Tag(name = "Docentes", description = "OPERACIONES (CRUD) sobre los docentes de KinalNotes")
+@Tag(name = "Docentes", description = "Operaciones (CRUD) sobre los docentes de KinalNotes")
 public class DocenteController {
     private final DocenteService docenteService;
 
@@ -26,6 +26,14 @@ public class DocenteController {
     }
 
     @GetMapping
+    @Operation(
+            summary = "Obtener todos los docentes",
+            description = "Retorna todos los docentes existentes en el sistema",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Docentes encontrados con exito"),
+                    @ApiResponse(responseCode = "404", description = "Docentes no encontrados", content = @Content)
+            }
+    )
     public ResponseEntity<List<DocenteDto>> obtenerTodo(){
         return ResponseEntity.ok(this.docenteService.obtenerTodo());
     }
@@ -44,17 +52,41 @@ public class DocenteController {
     }
 
     @PostMapping
+    @Operation(
+            summary = "Agrega un nuevo docente",
+            description = "Agrega un docente nuevo al sistema",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Docente agregado con exito"),
+                    @ApiResponse(responseCode = "404", description = "Docente no agregado", content = @Content)
+            }
+    )
     public ResponseEntity<DocenteDto> guardarDocente(@RequestBody @Valid DocenteDto docenteDto){
         return ResponseEntity.status(HttpStatus.CREATED).body(this.docenteService.guardarDocente(docenteDto));
     }
 
     @PutMapping("{codigo}")
-    public ResponseEntity<DocenteDto> actualizarDocente(@PathVariable Long codigo, @RequestBody @Valid ModDocenteDto modDocenteDto){
+    @Operation(
+            summary = "Actualizar un docente existente",
+            description = "Actualiza un docente del sistema ya existente",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Docente actualizado con exito"),
+                    @ApiResponse(responseCode = "404", description = "Docente no encontrado o no actualizado", content = @Content)
+            }
+    )
+    public ResponseEntity<DocenteDto> actualizarDocente(@Parameter(description = "Identificador de el docente a actualizar", example = "5")@PathVariable Long codigo, @RequestBody @Valid ModDocenteDto modDocenteDto){
         return ResponseEntity.ok(this.docenteService.actualizarDocente(codigo, modDocenteDto));
     }
 
     @DeleteMapping("{codigo}")
-    public ResponseEntity<DocenteDto> eliminarDocente(@PathVariable Long codigo){
+    @Operation(
+            summary = "Eliminar un docente existente",
+            description = "Elimina un docente del sistema ya existente",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Docente eliminado con exito"),
+                    @ApiResponse(responseCode = "404", description = "Docente no encontrado o no eliminado", content = @Content)
+            }
+    )
+    public ResponseEntity<DocenteDto> eliminarDocente(@Parameter(description = "Identificador de el docente a eliminar", example = "5")@PathVariable Long codigo){
         this.docenteService.eliminarDocente(codigo);
         return ResponseEntity.ok().build();
     }
