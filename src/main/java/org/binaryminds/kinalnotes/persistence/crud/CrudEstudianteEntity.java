@@ -10,4 +10,5 @@ import java.util.Optional;
 public interface CrudEstudianteEntity extends CrudRepository<EstudianteEntity, Long> {
     EstudianteEntity findFirstByNombre(String nombre);
     Optional<EstudianteEntity> findByNombre(String nombre);
+    java.util.List<EstudianteEntity> findByCursos_Codigo(Long codigoCurso);
 }

@@ -12,4 +12,5 @@ public interface EstudianteRepository {
     EstudianteDto actualizarEstudiante(Long codigo, ModEstudianteDto modEstudianteDto);
     void eliminarEstudiante(Long codigo);
     EstudianteDto obtenerEstudiantePorNombre(String nombre);
+    List<EstudianteDto> obtenerEstudiantesPorCurso(Long codigoCurso);
 }

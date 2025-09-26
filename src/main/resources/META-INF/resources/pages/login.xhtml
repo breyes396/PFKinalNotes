@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <title>Login - Kinal Notes</title>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/primeflex.css"/>
+    <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/themes/primeone-dark.css"/>
+</h:head>
+<h:body style="background:#111; color:#eee; font-family: 'Inter',Arial,sans-serif;">
+    <div class="flex align-items-center justify-content-center" style="min-height:100vh;">
+        <div class="surface-card p-4 shadow-2 border-round w-full md:w-4" style="max-width:430px;">
+            <h2 class="text-center" style="margin:0 0 1.5rem;">Iniciar Sesión</h2>
+            <h:form id="frmLogin" prependId="false">
+                <p:messages id="msgs" closable="true" showDetail="true"/>
+                <div class="field mb-3">
+                    <p:outputLabel for="email" value="Correo"/>
+                    <p:inputText id="email" value="#{loginView.email}" placeholder="correo@dominio.com" styleClass="w-full"/>
+                </div>
+                <div class="field mb-3">
+                    <p:outputLabel for="password" value="Contraseña"/>
+                    <p:password id="password" value="#{loginView.password}" feedback="false" styleClass="w-full"/>
+                </div>
+                <p:commandButton value="Entrar" actionListener="#{loginView.login}" update="@form" icon="pi pi-sign-in" styleClass="w-full mb-3"/>
+                <div class="text-center text-500" style="font-size:0.9rem;">
+                    ¿No tienes una cuenta?
+                    <h:link outcome="/pages/registro.xhtml" value="Regístrate" style="color:#60a5fa; margin-left:4px;"/>
+                </div>
+                <div class="text-center mt-3">
+                    <h:link outcome="/index.xhtml" value="Volver al inicio" style="font-size:0.75rem; color:#999;"/>
+                </div>
+            </h:form>
+        </div>
+    </div>
+</h:body>
+</html>
+

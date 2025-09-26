@@ -7,14 +7,15 @@ public class RoleMapper {
 
     @Named("generarRole")
     public static Role generarRol(String rol) {
-
         if(rol==null) return null;
-
-        return switch (rol.toUpperCase()){
-            case "ADMINISTRADOR" -> Role.ADMIN;
-            case "ESTUDIANTE" -> Role.STUDENT;
-            case "DOCENTE" -> Role.TEACHER;
-            default -> null;
+        String r = rol.trim().toUpperCase();
+        return switch (r) {
+            case "ADMINISTRADOR", "ADMIN" -> Role.ADMIN;
+            case "ESTUDIANTE", "STUDENT" -> Role.STUDENT;
+            case "DOCENTE", "TEACHER" -> Role.TEACHER;
+            default -> {
+                try { yield Role.valueOf(r); } catch (IllegalArgumentException ex) { yield null; }
+            }
         };
     }
     @Named("generarRol")
@@ -28,4 +29,3 @@ public class RoleMapper {
         };
     }
 }
-

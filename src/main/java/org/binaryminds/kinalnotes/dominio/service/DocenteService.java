@@ -32,6 +32,8 @@ public class DocenteService {
     public void eliminarDocente(Long codigo){
         this.docenteRepository.eliminarDocente(codigo);
     }
+    public DocenteDto obtenerDocentePorCodigoUsuario(Long codigoUsuario){
+        return this.docenteRepository.obtenerDocentePorCodigoUsuario(codigoUsuario);
+    }
 
 }
-

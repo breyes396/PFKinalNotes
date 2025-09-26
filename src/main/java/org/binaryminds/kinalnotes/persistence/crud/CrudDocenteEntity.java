@@ -10,4 +10,5 @@ import java.util.Optional;
 public interface CrudDocenteEntity extends CrudRepository<DocenteEntity, Long> {
     DocenteEntity findFirstByNombre(String nombre);
     Optional<DocenteEntity> findByNombre(String nombre);
+    Optional<DocenteEntity> findByCodigoUsuario(Long codigoUsuario);
 }
