@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<h:head>
+    <title>Administración de Estudiantes - Kinal Notes</title>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/primeflex.css"/>
+    <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/themes/primeone-dark.css"/>
+</h:head>
+<h:body style="background:#121212; color:#eee; font-family:'Inter',Arial,sans-serif;">
+    <h:form id="formAdminEstudiantes">
+        <p:growl id="growl" showDetail="true"/>
+
+        <div class="card" style="margin:1rem;">
+            <p:menubar>
+                <p:menuitem value="Menú Administrador" icon="pi pi-arrow-left" outcome="/pages/menu_admin.xhtml"/>
+                <p:menuitem value="Administrar Estudiantes" icon="pi pi-users"
+                            style="font-weight:bold; color:#10b981;"/>
+                <p:menuitem value="Cerrar Sesión" icon="pi pi-sign-out" actionListener="#{authSession.logout}"/>
+            </p:menubar>
+        </div>
+        <div class="card" style="margin:1rem;">
+            <p:commandButton value="Agregar Estudiante" icon="pi pi-plus" styleClass="p-button-success mb-3"
+                             actionListener="#{estudianteView.prepararNuevoEstudiante}"
+                             update=":formAdminEstudiantes:dialogoEstudiantePanel"
+                             oncomplete="PF('dlgEstudiante').show()"/>
+            <p:dataTable id="tabla-estudiantes" value="#{estudianteView.estudiantes}" var="row" widgetVar="tablaEstudiantes"
+                         emptyMessage="No hay estudiantes registrados" paginator="true" rows="10"
+                         responsiveLayout="scroll">
+                <f:facet name="header">
+                    <div class="flex justify-content-center flex-wrap card-container yellow-container">
+                        <div class="flex align-items-center justify-content-center w-20rem h-4rem bg-yellow-500 font-bold text-gray-900 border-round m-2">
+                            <h3 style="margin:0;">Estudiantes registrados</h3>
+                        </div>
+                    </div>
+                </f:facet>
+                <p:column headerText="ID">
+                    <h:outputText value="#{estudianteView.getCodigo(row)}"/>
+                </p:column>
+                <p:column headerText="NOMBRE">
+                    <h:outputText value="#{estudianteView.getName(row)}"/>
+                </p:column>
+                <p:column headerText="APELLIDO">
+                    <h:outputText value="#{estudianteView.getLastname(row)}"/>
+                </p:column>
+                <p:column headerText="CURSOS">
+                    <ui:repeat value="#{estudianteView.getCourses(row)}" var="curso">
+                        <span class="badge bg-blue-500 mr-1">#{curso}</span>
+                    </ui:repeat>
+                </p:column>
+                <p:column headerText="OPCIONES" style="width:180px;">
+                    <p:commandButton value="Editar" icon="pi pi-pencil"
+                                     actionListener="#{estudianteView.prepararEdicion(row)}"
+                                     update=":formAdminEstudiantes:dialogoEstudiantePanel"
+                                     oncomplete="PF('dlgEstudiante').show()" styleClass="p-button-sm p-button-warning"/>
+                    <p:commandButton value="Eliminar" icon="pi pi-trash"
+                                     actionListener="#{estudianteView.eliminarEstudiante(row)}"
+                                     process="@this"
+                                     update=":formAdminEstudiantes:tabla-estudiantes :formAdminEstudiantes:growl"
+                                     styleClass="p-button-sm p-button-danger"/>
+                </p:column>
+            </p:dataTable>
+        </div>
+
+        <!-- Diálogo para agregar/editar estudiante -->
+        <p:dialog id="dialogEstudiante" header="Agregar/Editar Estudiante" widgetVar="dlgEstudiante" modal="true" draggable="false" resizable="false" showEffect="fade" closable="true">
+            <p:outputPanel id="dialogoEstudiantePanel" class="ui-fluid">
+                <h:panelGroup rendered="#{not empty estudianteView.nuevoEstudiante}">
+                    <p:panel header="Datos del Estudiante" styleClass="mb-3">
+                        <div class="field">
+                            <p:outputLabel for="nombre" value="Nombre"/>
+                            <p:inputText id="nombre" value="#{estudianteView.nuevoEstudianteName}" required="true" styleClass="w-full"/>
+                        </div>
+                        <div class="field">
+                            <p:outputLabel for="apellido" value="Apellido"/>
+                            <p:inputText id="apellido" value="#{estudianteView.nuevoEstudianteLastname}" required="true" styleClass="w-full"/>
+                        </div>
+                        <div class="field">
+                            <p:outputLabel for="cursos" value="Cursos"/>
+                            <p:selectManyMenu id="cursos" value="#{estudianteView.nuevoEstudianteCourses}" styleClass="w-full">
+                                <f:selectItems value="#{estudianteView.cursosDisponibles}" var="curso" itemValue="#{estudianteView.getCursoCodigo(curso)}" itemLabel="#{estudianteView.getCursoNombre(curso)}"/>
+                            </p:selectManyMenu>
+                        </div>
+                    </p:panel>
+                </h:panelGroup>
+            </p:outputPanel>
+            <f:facet name="footer">
+                <p:commandButton value="Guardar" icon="pi pi-check" actionListener="#{estudianteView.guardarEstudiante}"
+                                 process="@form"
+                                 update=":formAdminEstudiantes:tabla-estudiantes :formAdminEstudiantes:dialogoEstudiantePanel :formAdminEstudiantes:growl"
+                                 oncomplete="if(!args.validationFailed){PF('dlgEstudiante').hide();PrimeFaces.ab({source:'formAdminEstudiantes:limpiar',process:'@this'});}"/>
+                <p:commandButton id="limpiar" value="Cancelar" type="button" icon="pi pi-times" onclick="PF('dlgEstudiante').hide();PrimeFaces.ab({source:'formAdminEstudiantes:limpiar',process:'@this'});" class="p-button-secondary" actionListener="#{estudianteView.prepararNuevoEstudiante}"/>
+            </f:facet>
+        </p:dialog>
+    </h:form>
+</h:body>
+</html>

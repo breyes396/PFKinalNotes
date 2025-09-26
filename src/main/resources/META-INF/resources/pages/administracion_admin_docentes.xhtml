@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<h:head>
+    <title>Administración de Docentes - Kinal Notes</title>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/primeflex.css"/>
+    <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/themes/primeone-dark.css"/>
+</h:head>
+<h:body style="background:#121212; color:#eee; font-family:'Inter',Arial,sans-serif;">
+    <h:form id="formAdminDocentes">
+        <p:growl id="growl" showDetail="true"/>
+        <div class="card" style="margin:1rem;">
+            <p:menubar>
+                <p:menuitem value="Menú Administrador" icon="pi pi-arrow-left" outcome="/pages/menu_admin.xhtml"/>
+                <p:menuitem value="Administrar Docentes" icon="pi pi-users" style="font-weight:bold; color:#10b981;"/>
+                <p:menuitem value="Cerrar Sesión" icon="pi pi-sign-out" actionListener="#{authSession.logout}"/>
+            </p:menubar>
+        </div>
+        <div class="card" style="margin:1rem;">
+            <p:commandButton value="Agregar Docente" icon="pi pi-plus" styleClass="p-button-success mb-3"
+                             actionListener="#{docenteView.prepararNuevoDocente}"
+                             update=":formAdminDocentes:dialogoDocentePanel"
+                             oncomplete="PF('dlgDocente').show()"/>
+            <p:dataTable id="tabla-docentes" value="#{docenteView.docentes}" var="row" widgetVar="tablaDocentes"
+                         emptyMessage="No hay docentes registrados" paginator="true" rows="10"
+                         responsiveLayout="scroll">
+                <f:facet name="header">
+                    <div class="flex justify-content-center flex-wrap card-container yellow-container">
+                        <div class="flex align-items-center justify-content-center w-20rem h-4rem bg-yellow-500 font-bold text-gray-900 border-round m-2">
+                            <h3 style="margin:0;">Docentes registrados</h3>
+                        </div>
+                    </div>
+                </f:facet>
+                <p:column headerText="ID">
+                    <h:outputText value="#{docenteView.getCodigo(row)}"/>
+                </p:column>
+                <p:column headerText="NOMBRE">
+                    <h:outputText value="#{docenteView.getName(row)}"/>
+                </p:column>
+                <p:column headerText="APELLIDO">
+                    <h:outputText value="#{docenteView.getLastname(row)}"/>
+                </p:column>
+                <p:column headerText="CURSO">
+                    <h:outputText value="#{docenteView.getCursoNombre(row.codigoCurso)}"/>
+                </p:column>
+                <p:column headerText="OPCIONES" style="width:180px;">
+                    <p:commandButton value="Editar" icon="pi pi-pencil"
+                                     actionListener="#{docenteView.prepararEdicion(row)}"
+                                     update=":formAdminDocentes:dialogoDocentePanel"
+                                     oncomplete="PF('dlgDocente').show()" styleClass="p-button-sm p-button-warning"/>
+                    <p:commandButton value="Eliminar" icon="pi pi-trash"
+                                     actionListener="#{docenteView.eliminarDocente(row)}"
+                                     process="@this"
+                                     update=":formAdminDocentes:tabla-docentes :formAdminDocentes:growl"
+                                     styleClass="p-button-sm p-button-danger"/>
+                </p:column>
+            </p:dataTable>
+        </div>
+        <p:dialog id="dialogDocente" header="Agregar/Editar Docente" widgetVar="dlgDocente" modal="true" draggable="false" resizable="false" showEffect="fade" closable="true">
+            <p:outputPanel id="dialogoDocentePanel" class="ui-fluid">
+                <h:panelGroup rendered="#{not empty docenteView.nuevoDocente}">
+                    <p:panel header="Datos del Docente" styleClass="mb-3">
+                        <div class="field">
+                            <p:outputLabel for="nombre" value="Nombre"/>
+                            <p:inputText id="nombre" value="#{docenteView.nuevoDocenteName}" required="true" styleClass="w-full"/>
+                        </div>
+                        <div class="field">
+                            <p:outputLabel for="apellido" value="Apellido"/>
+                            <p:inputText id="apellido" value="#{docenteView.nuevoDocenteLastname}" required="true" styleClass="w-full"/>
+                        </div>
+                        <div class="field">
+                            <p:outputLabel for="curso" value="Curso"/>
+                            <p:selectOneMenu id="curso" value="#{docenteView.nuevoDocenteCodigoCurso}" styleClass="w-full">
+                                <f:selectItems value="#{docenteView.cursosDisponibles}" var="curso" itemValue="#{docenteView.getCursoCodigo(curso)}" itemLabel="#{docenteView.getCursoNombre(curso)}"/>
+                            </p:selectOneMenu>
+                        </div>
+                    </p:panel>
+                </h:panelGroup>
+            </p:outputPanel>
+            <f:facet name="footer">
+                <p:commandButton value="Guardar" icon="pi pi-check" actionListener="#{docenteView.guardarDocente}"
+                                 process="@form"
+                                 update=":formAdminDocentes:tabla-docentes :formAdminDocentes:dialogoDocentePanel :formAdminDocentes:growl"
+                                 oncomplete="if(!args.validationFailed){PF('dlgDocente').hide();PrimeFaces.ab({source:'formAdminDocentes:limpiar',process:'@this'});}"/>
+                <p:commandButton id="limpiar" value="Cancelar" type="button" icon="pi pi-times" onclick="PF('dlgDocente').hide();PrimeFaces.ab({source:'formAdminDocentes:limpiar',process:'@this'});" class="p-button-secondary" actionListener="#{docenteView.prepararNuevoDocente}"/>
+            </f:facet>
+        </p:dialog>
+    </h:form>
+</h:body>
+</html>
+

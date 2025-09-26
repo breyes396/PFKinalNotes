@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<h:head>
+    <title>Administración de Cursos - Kinal Notes</title>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/primeflex.css"/>
+    <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/themes/primeone-dark.css"/>
+</h:head>
+<h:body style="background:#121212; color:#eee; font-family:'Inter',Arial,sans-serif;">
+    <h:form id="formAdminCursos">
+        <p:growl id="growl" showDetail="true"/>
+        <div class="card" style="margin:1rem;">
+            <p:menubar>
+                <p:menuitem value="Menú Administrador" icon="pi pi-arrow-left" outcome="/pages/menu_admin.xhtml"/>
+                <p:menuitem value="Administrar Cursos" icon="pi pi-book" style="font-weight:bold; color:#10b981;"/>
+                <p:menuitem value="Cerrar Sesión" icon="pi pi-sign-out" actionListener="#{authSession.logout}"/>
+            </p:menubar>
+        </div>
+        <div class="card" style="margin:1rem;">
+            <p:commandButton value="Agregar Curso" icon="pi pi-plus" styleClass="p-button-success mb-3"
+                             actionListener="#{cursoView.prepararNuevoCurso}"
+                             update=":formAdminCursos:dialogoCursoPanel"
+                             oncomplete="PF('dlgCurso').show()"/>
+            <p:dataTable id="tabla-cursos" value="#{cursoView.cursos}" var="row" widgetVar="tablaCursos"
+                         emptyMessage="No hay cursos registrados" paginator="true" rows="10"
+                         responsiveLayout="scroll">
+                <f:facet name="header">
+                    <div class="flex justify-content-center flex-wrap card-container yellow-container">
+                        <div class="flex align-items-center justify-content-center w-20rem h-4rem bg-yellow-500 font-bold text-gray-900 border-round m-2">
+                            <h3 style="margin:0;">Cursos registrados</h3>
+                        </div>
+                    </div>
+                </f:facet>
+                <p:column headerText="ID">
+                    <h:outputText value="#{cursoView.getCodigo(row)}"/>
+                </p:column>
+                <p:column headerText="NOMBRE">
+                    <h:outputText value="#{cursoView.getName(row)}"/>
+                </p:column>
+                <p:column headerText="GRADO">
+                    <h:outputText value="#{cursoView.getDegree(row)}"/>
+                </p:column>
+                <p:column headerText="OPCIONES" style="width:180px;">
+                    <p:commandButton value="Editar" icon="pi pi-pencil"
+                                     actionListener="#{cursoView.prepararEdicion(row)}"
+                                     update=":formAdminCursos:dialogoCursoPanel"
+                                     oncomplete="PF('dlgCurso').show()" styleClass="p-button-sm p-button-warning"/>
+                    <p:commandButton value="Eliminar" icon="pi pi-trash"
+                                     actionListener="#{cursoView.eliminarCurso(row)}"
+                                     process="@this"
+                                     update=":formAdminCursos:tabla-cursos :formAdminCursos:growl"
+                                     styleClass="p-button-sm p-button-danger"/>
+                </p:column>
+            </p:dataTable>
+        </div>
+        <p:dialog id="dialogCurso" header="Agregar/Editar Curso" widgetVar="dlgCurso" modal="true" draggable="false" resizable="false" showEffect="fade" closable="true">
+            <p:outputPanel id="dialogoCursoPanel" class="ui-fluid">
+                <h:panelGroup rendered="#{not empty cursoView.nuevoCurso}">
+                    <p:panel header="Datos del Curso" styleClass="mb-3">
+                        <div class="field">
+                            <p:outputLabel for="nombre" value="Nombre"/>
+                            <p:inputText id="nombre" value="#{cursoView.nuevoCursoName}" required="true" styleClass="w-full"/>
+                        </div>
+                        <div class="field">
+                            <p:outputLabel for="grado" value="Grado"/>
+                            <p:inputText id="grado" value="#{cursoView.nuevoCursoDegree}" required="true" styleClass="w-full"/>
+                        </div>
+                    </p:panel>
+                </h:panelGroup>
+            </p:outputPanel>
+            <f:facet name="footer">
+                <p:commandButton value="Guardar" icon="pi pi-check" actionListener="#{cursoView.guardarCurso}"
+                                 process="@form"
+                                 update=":formAdminCursos:tabla-cursos :formAdminCursos:dialogoCursoPanel :formAdminCursos:growl"
+                                 oncomplete="if(!args.validationFailed){PF('dlgCurso').hide();PrimeFaces.ab({source:'formAdminCursos:limpiar',process:'@this'});}"/>
+                <p:commandButton id="limpiar" value="Cancelar" type="button" icon="pi pi-times" onclick="PF('dlgCurso').hide();PrimeFaces.ab({source:'formAdminCursos:limpiar',process:'@this'});" class="p-button-secondary" actionListener="#{cursoView.prepararNuevoCurso}"/>
+            </f:facet>
+        </p:dialog>
+    </h:form>
+</h:body>
+</html>
+

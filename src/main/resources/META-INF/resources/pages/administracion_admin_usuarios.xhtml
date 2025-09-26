@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<h:head>
+    <title>Administración de Usuarios - Kinal Notes</title>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/primeflex.css"/>
+    <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/themes/primeone-dark.css"/>
+</h:head>
+<h:body style="background:#121212; color:#eee; font-family:'Inter',Arial,sans-serif;">
+    <h:form id="formAdminUsuarios">
+        <p:growl id="growl" showDetail="true"/>
+        <div class="card" style="margin:1rem;">
+            <p:menubar>
+                <p:menuitem value="Menú Administrador" icon="pi pi-arrow-left" outcome="/pages/menu_admin.xhtml"/>
+                <p:menuitem value="Administrar Usuarios" icon="pi pi-users" style="font-weight:bold; color:#10b981;"/>
+                <p:menuitem value="Cerrar Sesión" icon="pi pi-sign-out" actionListener="#{authSession.logout}"/>
+            </p:menubar>
+        </div>
+        <div class="card" style="margin:1rem;">
+            <p:commandButton value="Agregar Usuario" icon="pi pi-plus" styleClass="p-button-success mb-3"
+                             actionListener="#{usuarioView.prepararNuevoUsuario}"
+                             update=":formAdminUsuarios:dialogoUsuarioPanel"
+                             oncomplete="PF('dlgUsuario').show()"/>
+            <p:dataTable id="tabla-usuarios" value="#{usuarioView.usuarios}" var="row" widgetVar="tablaUsuarios"
+                         emptyMessage="No hay usuarios registrados" paginator="true" rows="10"
+                         responsiveLayout="scroll">
+                <f:facet name="header">
+                    <div class="flex justify-content-center flex-wrap card-container yellow-container">
+                        <div class="flex align-items-center justify-content-center w-20rem h-4rem bg-yellow-500 font-bold text-gray-900 border-round m-2">
+                            <h3 style="margin:0;">Usuarios registrados</h3>
+                        </div>
+                    </div>
+                </f:facet>
+                <p:column headerText="ID">
+                    <h:outputText value="#{usuarioView.getCodigo(row)}"/>
+                </p:column>
+                <p:column headerText="CORREO">
+                    <h:outputText value="#{usuarioView.getCorreo(row)}"/>
+                </p:column>
+                <p:column headerText="ROL">
+                    <h:outputText value="#{usuarioView.getRol(row)}"/>
+                </p:column>
+                <p:column headerText="OPCIONES" style="width:180px;">
+                    <p:commandButton value="Editar" icon="pi pi-pencil"
+                                     actionListener="#{usuarioView.prepararEdicion(row)}"
+                                     update=":formAdminUsuarios:dialogoUsuarioPanel"
+                                     oncomplete="PF('dlgUsuario').show()" styleClass="p-button-sm p-button-warning"/>
+                    <p:commandButton value="Eliminar" icon="pi pi-trash"
+                                     actionListener="#{usuarioView.eliminarUsuario(row)}"
+                                     process="@this"
+                                     update=":formAdminUsuarios:tabla-usuarios :formAdminUsuarios:growl"
+                                     styleClass="p-button-sm p-button-danger"/>
+                </p:column>
+            </p:dataTable>
+        </div>
+        <p:dialog id="dialogUsuario" header="Agregar/Editar Usuario" widgetVar="dlgUsuario" modal="true" draggable="false" resizable="false" showEffect="fade" closable="true">
+            <p:outputPanel id="dialogoUsuarioPanel" class="ui-fluid">
+                <h:panelGroup rendered="#{not empty usuarioView.nuevoUsuario}">
+                    <p:panel header="Datos del Usuario" styleClass="mb-3">
+                        <div class="field">
+                            <p:outputLabel for="correo" value="Correo"/>
+                            <p:inputText id="correo" value="#{usuarioView.nuevoUsuarioCorreo}" required="true" styleClass="w-full"/>
+                        </div>
+                        <div class="field">
+                            <p:outputLabel for="contrasena" value="Contraseña"/>
+                            <p:inputText id="contrasena" value="#{usuarioView.nuevoUsuarioContrasena}" required="true" styleClass="w-full"/>
+                        </div>
+                        <div class="field">
+                            <p:outputLabel for="rol" value="Rol"/>
+                            <p:selectOneMenu id="rol" value="#{usuarioView.nuevoUsuarioRol}" styleClass="w-full">
+                                <f:selectItem itemLabel="Selecciona un rol" itemValue=""/>
+                                <f:selectItem itemLabel="STUDENT" itemValue="STUDENT"/>
+                                <f:selectItem itemLabel="TEACHER" itemValue="TEACHER"/>
+                                <f:selectItem itemLabel="ADMIN" itemValue="ADMIN"/>
+                            </p:selectOneMenu>
+                        </div>
+                    </p:panel>
+                </h:panelGroup>
+            </p:outputPanel>
+            <f:facet name="footer">
+                <p:commandButton value="Guardar" icon="pi pi-check" actionListener="#{usuarioView.guardarUsuario}"
+                                 process="@form"
+                                 update=":formAdminUsuarios:tabla-usuarios :formAdminUsuarios:dialogoUsuarioPanel :formAdminUsuarios:growl"
+                                 oncomplete="if(!args.validationFailed){PF('dlgUsuario').hide();PrimeFaces.ab({source:'formAdminUsuarios:limpiar',process:'@this'});}"/>
+                <p:commandButton id="limpiar" value="Cancelar" type="button" icon="pi pi-times" onclick="PF('dlgUsuario').hide();PrimeFaces.ab({source:'formAdminUsuarios:limpiar',process:'@this'});" class="p-button-secondary" actionListener="#{usuarioView.prepararNuevoUsuario}"/>
+            </f:facet>
+        </p:dialog>
+    </h:form>
+</h:body>
+</html>
+

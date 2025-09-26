@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<h:head>
+    <title>Administración de Notas - Kinal Notes</title>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/primeflex.css"/>
+    <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/themes/primeone-dark.css"/>
+</h:head>
+<h:body style="background:#121212; color:#eee; font-family:'Inter',Arial,sans-serif;">
+    <h:form id="formAdminNotas">
+        <p:growl id="growl" showDetail="true"/>
+        <div class="card" style="margin:1rem;">
+            <p:menubar>
+                <p:menuitem value="Menú Administrador" icon="pi pi-arrow-left" outcome="/pages/menu_admin.xhtml"/>
+                <p:menuitem value="Administrar Notas" icon="pi pi-book" style="font-weight:bold; color:#10b981;"/>
+                <p:menuitem value="Cerrar Sesión" icon="pi pi-sign-out" actionListener="#{authSession.logout}"/>
+            </p:menubar>
+        </div>
+        <div class="card" style="margin:1rem;">
+            <p:commandButton value="Agregar Nota" icon="pi pi-plus" styleClass="p-button-success mb-3"
+                             actionListener="#{notaView.prepararNuevaNota}"
+                             update=":formAdminNotas:dialogoNotaPanel"
+                             oncomplete="PF('dlgNota').show()"/>
+            <p:dataTable id="tabla-notas" value="#{notaView.notas}" var="row" widgetVar="tablaNotas"
+                         emptyMessage="No hay notas registradas" paginator="true" rows="10"
+                         responsiveLayout="scroll">
+                <f:facet name="header">
+                    <div class="flex justify-content-center flex-wrap card-container yellow-container">
+                        <div class="flex align-items-center justify-content-center w-20rem h-4rem bg-yellow-500 font-bold text-gray-900 border-round m-2">
+                            <h3 style="margin:0;">Notas registradas</h3>
+                        </div>
+                    </div>
+                </f:facet>
+                <p:column headerText="ID">
+                    <h:outputText value="#{notaView.getCodigo(row)}"/>
+                </p:column>
+                <p:column headerText="FECHA">
+                    <h:outputText value="#{notaView.getFecha(row)}"/>
+                </p:column>
+                <p:column headerText="CALIFICACIÓN">
+                    <h:outputText value="#{notaView.getCalificacion(row)}"/>
+                </p:column>
+                <p:column headerText="CURSO">
+                    <h:outputText value="#{notaView.getCodigoCurso(row)}"/>
+                </p:column>
+                <p:column headerText="ESTUDIANTE">
+                    <h:outputText value="#{notaView.getCodigoEstudiante(row)}"/>
+                </p:column>
+                <p:column headerText="DOCENTE">
+                    <h:outputText value="#{notaView.getCodigoDocente(row)}"/>
+                </p:column>
+                <p:column headerText="OPCIONES" style="width:180px;">
+                    <p:commandButton value="Editar" icon="pi pi-pencil"
+                                     actionListener="#{notaView.prepararEdicion(row)}"
+                                     update=":formAdminNotas:dialogoNotaPanel"
+                                     oncomplete="PF('dlgNota').show()" styleClass="p-button-sm p-button-warning"/>
+                    <p:commandButton value="Eliminar" icon="pi pi-trash"
+                                     actionListener="#{notaView.eliminarNota(row)}"
+                                     process="@this"
+                                     update=":formAdminNotas:tabla-notas :formAdminNotas:growl"
+                                     styleClass="p-button-sm p-button-danger"/>
+                </p:column>
+            </p:dataTable>
+        </div>
+        <p:dialog id="dialogNota" header="Agregar/Editar Nota" widgetVar="dlgNota" modal="true" draggable="false" resizable="false" showEffect="fade" closable="true">
+            <p:outputPanel id="dialogoNotaPanel" class="ui-fluid">
+                <h:panelGroup rendered="#{not empty notaView.nuevaNota}">
+                    <p:panel header="Datos de la Nota" styleClass="mb-3">
+                        <div class="field">
+                            <p:outputLabel for="fecha" value="Fecha"/>
+                            <p:inputText id="fecha" value="#{notaView.nuevaNotaFecha}" required="true" styleClass="w-full"/>
+                        </div>
+                        <div class="field">
+                            <p:outputLabel for="calificacion" value="Calificación"/>
+                            <p:inputText id="calificacion" value="#{notaView.nuevaNotaCalificacion}" required="true" styleClass="w-full"/>
+                        </div>
+                        <div class="field">
+                            <p:outputLabel for="curso" value="Curso"/>
+                            <p:inputText id="curso" value="#{notaView.nuevaNotaCodigoCurso}" required="true" styleClass="w-full"/>
+                        </div>
+                        <div class="field">
+                            <p:outputLabel for="estudiante" value="Estudiante"/>
+                            <p:inputText id="estudiante" value="#{notaView.nuevaNotaCodigoEstudiante}" required="true" styleClass="w-full"/>
+                        </div>
+                        <div class="field">
+                            <p:outputLabel for="docente" value="Docente"/>
+                            <p:inputText id="docente" value="#{notaView.nuevaNotaCodigoDocente}" required="true" styleClass="w-full"/>
+                        </div>
+                    </p:panel>
+                </h:panelGroup>
+            </p:outputPanel>
+            <f:facet name="footer">
+                <p:commandButton value="Guardar" icon="pi pi-check" actionListener="#{notaView.guardarNota}"
+                                 process="@form"
+                                 update=":formAdminNotas:tabla-notas :formAdminNotas:dialogoNotaPanel :formAdminNotas:growl"
+                                 oncomplete="if(!args.validationFailed){PF('dlgNota').hide();PrimeFaces.ab({source:'formAdminNotas:limpiar',process:'@this'});}"/>
+                <p:commandButton id="limpiar" value="Cancelar" type="button" icon="pi pi-times" onclick="PF('dlgNota').hide();PrimeFaces.ab({source:'formAdminNotas:limpiar',process:'@this'});" class="p-button-secondary" actionListener="#{notaView.prepararNuevaNota}"/>
+            </f:facet>
+        </p:dialog>
+    </h:form>
+</h:body>
+</html>
+

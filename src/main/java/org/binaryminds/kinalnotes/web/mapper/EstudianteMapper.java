@@ -20,13 +20,13 @@ public interface EstudianteMapper {
 
     @Mapping(source = "name", target = "nombre")
     @Mapping(source = "lastname", target = "apellido")
-    @Mapping(source = "courses",target = "cursos")
+    @Mapping(source = "courses",target = "cursos", qualifiedByName = "idsToCursos")
     @Mapping(source = "codigo_usuario", target = "usuario", qualifiedByName = "usuarioFromId")
     EstudianteEntity toEntity(EstudianteDto estudianteDto);
 
-    @Mapping(source = "name", target = "nombre")
-    @Mapping(source = "lastname", target = "apellido")
-    @Mapping(source = "courses",target = "cursos")
+    @Mapping(target = "nombre", source = "name")
+    @Mapping(target = "apellido", source = "lastname")
+    @Mapping(target = "cursos", source = "courses", qualifiedByName = "idsToCursos")
     void modificarEntityFromDto(ModEstudianteDto modEstudianteDto, @MappingTarget EstudianteEntity estudianteEntity);
 
     @Named("usuarioToId")
@@ -52,5 +52,17 @@ public interface EstudianteMapper {
         CursoEntity curso = new CursoEntity();
         curso.setCodigo(codigo_curso);
         return curso;
+    }
+
+    @Named("idsToCursos")
+    default List<CursoEntity> idsToCursos(List<Long> ids) {
+        if (ids == null) return List.of();
+        return ids.stream().map(this::cursoFromId).toList();
+    }
+
+    @Named("cursosToIds")
+    default List<Long> cursosToIds(List<CursoEntity> cursos) {
+        if (cursos == null) return List.of();
+        return cursos.stream().map(this::cursoToId).toList();
     }
 }
