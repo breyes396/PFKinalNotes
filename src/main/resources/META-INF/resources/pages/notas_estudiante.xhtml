@@ -5,7 +5,7 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
 <h:head>
-    <title>Mis Cursos - Kinal Notes</title>
+    <title>Mis Notas - Kinal Notes</title>
     <meta charset="UTF-8"/>
     <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/primeflex.css"/>
     <h:outputStylesheet library="css" name="theme.css"/>
@@ -25,38 +25,38 @@
         <div class="color-bar" style="margin:0 0 .75rem;">
             <span class="cb-blue"></span><span class="cb-green"></span><span class="cb-yellow"></span><span class="cb-red"></span><span class="cb-dark"></span>
         </div>
-        <h:form id="formCursosEstudiante">
+        <h:form id="formNotasEstudiante">
             <div style="font-size:.6rem; letter-spacing:.5px; color:#555; margin:0 0 .5rem;">
-                <span class="badge badge-blue">CURSOS</span>
-                <span class="badge badge-green" style="margin-left:4px;">INSCRITOS</span>
+                <span class="badge badge-blue">NOTAS</span>
+                <span class="badge badge-green" style="margin-left:4px;">CURSOS</span>
             </div>
             <div class="card spacing card-accent-dark subtle-shadow">
                 <p:menubar>
                     <p:menuitem value="Menú Estudiante" icon="pi pi-arrow-left" outcome="/pages/menu_estudiantes.xhtml"/>
-                    <p:menuitem value="Cursos Inscritos" icon="pi pi-book" style="font-weight:bold; color:#2563eb;"/>
+                    <p:menuitem value="Cursos Inscritos" icon="pi pi-book" outcome="/pages/cursos_estudiante.xhtml"/>
                     <p:menuitem value="Inscribirse" icon="pi pi-plus" outcome="/pages/inscripcion_cursos.xhtml"/>
-                    <p:menuitem value="Notas" icon="pi pi-list" outcome="/pages/notas_estudiante.xhtml"/>
+                    <p:menuitem value="Notas" icon="pi pi-list" style="font-weight:bold; color:#2563eb;"/>
                     <p:menuitem value="Cerrar Sesión" icon="pi pi-sign-out" actionListener="#{authSession.logout}"/>
                 </p:menubar>
             </div>
-            <div class="card datatable-wrapper card-accent-blue subtle-shadow">
-                <p:dataTable id="tabla-cursos" value="#{estudianteCursosView.cursosInscritos}" var="c" paginator="true" rows="10" emptyMessage="No está inscrito en cursos" responsiveLayout="scroll">
+            <div class="card datatable-wrapper card-accent-green subtle-shadow">
+                <p:dataTable id="tabla-notas" value="#{estudianteNotasView.notas}" var="n" paginator="true" rows="10" emptyMessage="No hay notas registradas" responsiveLayout="scroll">
                     <f:facet name="header">
                         <div class="header-box" style="display:flex; align-items:center; justify-content:space-between;">
-                            <h3 class="header-accent" style="margin:0;">Mis Cursos</h3>
+                            <h3 class="header-accent" style="margin:0;">Mis Notas</h3>
                             <div style="font-size:.55rem; letter-spacing:.5px; color:#555;">
-                                <span class="badge badge-blue">TOTAL #{estudianteCursosView.cursosInscritos != null ? estudianteCursosView.cursosInscritos.size() : 0}</span>
+                                <span class="badge badge-green">TOTAL #{estudianteNotasView.notas != null ? estudianteNotasView.notas.size() : 0}</span>
                             </div>
                         </div>
                     </f:facet>
-                    <p:column headerText="CÓDIGO" sortBy="#{c.codigo}" style="width:120px;">
-                        <h:outputText value="#{c.codigo}"/>
+                    <p:column headerText="CURSO" sortBy="#{n.cursoNombre}" filterBy="#{n.cursoNombre}" filterMatchMode="contains">
+                        <h:outputText value="#{n.cursoNombre}"/>
                     </p:column>
-                    <p:column headerText="NOMBRE" sortBy="#{c.nombre}" filterBy="#{c.nombre}" filterMatchMode="contains">
-                        <h:outputText value="#{c.nombre}"/>
+                    <p:column headerText="CÓDIGO CURSO" sortBy="#{n.cursoCodigo}" style="width:140px;">
+                        <h:outputText value="#{n.cursoCodigo}"/>
                     </p:column>
-                    <p:column headerText="GRADO" sortBy="#{c.grado}" style="width:200px;">
-                        <h:outputText value="#{c.grado}"/>
+                    <p:column headerText="NOTA" sortBy="#{n.calificacion}" style="width:120px; text-align:center;">
+                        <h:outputText value="#{n.calificacion}" style="#{estudianteNotasView.styleNota(n.calificacion)}"/>
                     </p:column>
                 </p:dataTable>
             </div>

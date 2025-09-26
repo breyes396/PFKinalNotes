@@ -7,8 +7,10 @@ import lombok.Getter;
 import lombok.Setter;
 import org.binaryminds.kinalnotes.dominio.dto.DocenteDto;
 import org.binaryminds.kinalnotes.dominio.dto.UsuarioDto;
+import org.binaryminds.kinalnotes.dominio.dto.EstudianteDto;
 import org.binaryminds.kinalnotes.dominio.service.DocenteService;
 import org.binaryminds.kinalnotes.dominio.service.UsuarioService;
+import org.binaryminds.kinalnotes.dominio.service.EstudianteService;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.annotation.RequestScope;
 
@@ -28,11 +30,13 @@ public class LoginView implements Serializable {
     private final UsuarioService usuarioService;
     private final AuthSession authSession; // AuthSession está en este mismo paquete
     private final DocenteService docenteService;
+    private final EstudianteService estudianteService;
 
-    public LoginView(UsuarioService usuarioService, AuthSession authSession, DocenteService docenteService) {
+    public LoginView(UsuarioService usuarioService, AuthSession authSession, DocenteService docenteService, EstudianteService estudianteService) {
         this.usuarioService = usuarioService;
         this.authSession = authSession;
         this.docenteService = docenteService;
+        this.estudianteService = estudianteService;
     }
 
     @PostConstruct
@@ -65,6 +69,11 @@ public class LoginView implements Serializable {
                 if (docente != null) {
                     authSession.setDocenteCodigo(docente.codigo());
                     authSession.setDocenteCursoCodigo(docente.codigo_curso());
+                }
+            } else if (usuario.role() == org.binaryminds.kinalnotes.dominio.Role.STUDENT) {
+                EstudianteDto estudiante = estudianteService.obtenerEstudiantePorCodigoUsuario(usuario.codigo());
+                if(estudiante != null){
+                    authSession.setEstudianteCodigo(estudiante.codigo());
                 }
             }
             ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Login", "Bienvenido: " + usuario.role().name()));

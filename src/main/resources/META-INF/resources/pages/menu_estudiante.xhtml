@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <title>Panel Estudiante - Kinal Notes</title>
+    <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/primeflex.css"/>
+    <h:outputStylesheet library="css" name="theme.css"/>
+    <link rel="stylesheet" href="#{request.contextPath}/css/theme.css" />
+    <style>
+        body {background:#ffffff; color:#222; font-family:'Inter',Arial,sans-serif; margin:0;}
+        .page-wrapper {padding:1.25rem 1rem 2.5rem; box-sizing:border-box; max-width:1100px; margin:0 auto;}
+        .card {background:#fff; border:1px solid #e5e7eb; border-radius:6px;}
+        .card.padded {padding:1.5rem;}
+        h2 {margin:0 0 1rem; font-weight:600; letter-spacing:.5px;}
+        .menubar-wrapper {margin-bottom:1rem;}
+        .panel-actions {margin-top:1rem; display:flex; flex-wrap:wrap; gap:.5rem;}
+    </style>
+</h:head>
+<h:body>
+    <div class="page-wrapper">
+        <div class="color-bar" style="margin:0 0 1rem;">
+            <span class="cb-blue"></span><span class="cb-green"></span><span class="cb-yellow"></span><span class="cb-red"></span><span class="cb-dark"></span>
+        </div>
+        <h:form id="frmMenuEstudiante">
+            <p:growl id="growl" showDetail="true"/>
+            <div class="card menubar-wrapper card-accent-dark subtle-shadow" style="padding:.25rem .75rem;">
+                <p:menubar>
+                    <p:menuitem value="Inicio" icon="pi pi-home" outcome="/index.xhtml"/>
+                    <p:menuitem value="Cursos Inscritos" icon="pi pi-book" outcome="/pages/cursos_estudiante.xhtml"/>
+                    <p:menuitem value="Inscribirse a Cursos" icon="pi pi-plus" outcome="/pages/inscripcion_cursos.xhtml"/>
+                    <p:menuitem value="Ver Notas" icon="pi pi-list" outcome="/pages/notas_estudiante.xhtml"/>
+                    <p:menuitem value="Cerrar Sesión" icon="pi pi-sign-out" actionListener="#{authSession.logout}"/>
+                </p:menubar>
+            </div>
+            <div class="card padded card-accent-blue subtle-shadow">
+                <div style="font-size:.65rem; letter-spacing:.5px; color:#555; margin:-.25rem 0 .75rem;">
+                    <span class="badge badge-yellow">PANEL</span>
+                    <span class="badge badge-blue" style="margin-left:4px;">ESTUDIANTE</span>
+                </div>
+                <h2 class="header-accent" style="margin-top:0;">Bienvenido Estudiante</h2>
+                <div class="neutral-box" style="margin:-.5rem 0 1.1rem; font-size:.7rem;">
+                    <span class="dot dot-blue"></span>Consulta tus cursos, inscríbete y revisa tus notas.
+                </div>
+                <div class="panel-actions">
+                    <p:button value="Mis Cursos" outcome="/pages/cursos_estudiante.xhtml" icon="pi pi-book" styleClass="p-button-info"/>
+                    <p:button value="Inscribirme" outcome="/pages/inscripcion_cursos.xhtml" icon="pi pi-plus" styleClass="p-button-success"/>
+                    <p:button value="Ver Notas" outcome="/pages/notas_estudiante.xhtml" icon="pi pi-list" styleClass="p-button-secondary"/>
+                </div>
+            </div>
+        </h:form>
+    </div>
+</h:body>
+</html>
+

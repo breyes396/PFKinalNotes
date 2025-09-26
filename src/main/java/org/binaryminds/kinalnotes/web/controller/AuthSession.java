@@ -21,6 +21,7 @@ public class AuthSession implements Serializable {
     private Role role;
     private Long docenteCodigo; // si es docente
     private Long docenteCursoCodigo; // curso que imparte
+    private Long estudianteCodigo; // si es estudiante
 
     public boolean isLogged(){
         return usuarioId != null;
@@ -37,6 +38,7 @@ public class AuthSession implements Serializable {
         role = null;
         docenteCodigo = null;
         docenteCursoCodigo = null;
+        estudianteCodigo = null;
     }
     public void logout(){
         clear();

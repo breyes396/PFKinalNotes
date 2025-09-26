@@ -5,7 +5,7 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
 <h:head>
-    <title>Mis Cursos - Kinal Notes</title>
+    <title>Inscripción a Cursos - Kinal Notes</title>
     <meta charset="UTF-8"/>
     <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/primeflex.css"/>
     <h:outputStylesheet library="css" name="theme.css"/>
@@ -25,27 +25,28 @@
         <div class="color-bar" style="margin:0 0 .75rem;">
             <span class="cb-blue"></span><span class="cb-green"></span><span class="cb-yellow"></span><span class="cb-red"></span><span class="cb-dark"></span>
         </div>
-        <h:form id="formCursosEstudiante">
+        <h:form id="formInscripcionCursos">
+            <p:growl id="growl" showDetail="true"/>
             <div style="font-size:.6rem; letter-spacing:.5px; color:#555; margin:0 0 .5rem;">
                 <span class="badge badge-blue">CURSOS</span>
-                <span class="badge badge-green" style="margin-left:4px;">INSCRITOS</span>
+                <span class="badge badge-yellow" style="margin-left:4px;">DISPONIBLES</span>
             </div>
             <div class="card spacing card-accent-dark subtle-shadow">
                 <p:menubar>
                     <p:menuitem value="Menú Estudiante" icon="pi pi-arrow-left" outcome="/pages/menu_estudiantes.xhtml"/>
-                    <p:menuitem value="Cursos Inscritos" icon="pi pi-book" style="font-weight:bold; color:#2563eb;"/>
-                    <p:menuitem value="Inscribirse" icon="pi pi-plus" outcome="/pages/inscripcion_cursos.xhtml"/>
+                    <p:menuitem value="Cursos Inscritos" icon="pi pi-book" outcome="/pages/cursos_estudiante.xhtml"/>
+                    <p:menuitem value="Inscribirse" icon="pi pi-plus" style="font-weight:bold; color:#2563eb;"/>
                     <p:menuitem value="Notas" icon="pi pi-list" outcome="/pages/notas_estudiante.xhtml"/>
                     <p:menuitem value="Cerrar Sesión" icon="pi pi-sign-out" actionListener="#{authSession.logout}"/>
                 </p:menubar>
             </div>
-            <div class="card datatable-wrapper card-accent-blue subtle-shadow">
-                <p:dataTable id="tabla-cursos" value="#{estudianteCursosView.cursosInscritos}" var="c" paginator="true" rows="10" emptyMessage="No está inscrito en cursos" responsiveLayout="scroll">
+            <div class="card datatable-wrapper card-accent-yellow subtle-shadow">
+                <p:dataTable id="tabla-cursos-disponibles" value="#{estudianteInscripcionView.cursosDisponibles}" var="c" paginator="true" rows="10" emptyMessage="No hay cursos disponibles" responsiveLayout="scroll">
                     <f:facet name="header">
                         <div class="header-box" style="display:flex; align-items:center; justify-content:space-between;">
-                            <h3 class="header-accent" style="margin:0;">Mis Cursos</h3>
+                            <h3 class="header-accent" style="margin:0;">Cursos Disponibles</h3>
                             <div style="font-size:.55rem; letter-spacing:.5px; color:#555;">
-                                <span class="badge badge-blue">TOTAL #{estudianteCursosView.cursosInscritos != null ? estudianteCursosView.cursosInscritos.size() : 0}</span>
+                                <span class="badge badge-yellow">TOTAL #{estudianteInscripcionView.cursosDisponibles != null ? estudianteInscripcionView.cursosDisponibles.size() : 0}</span>
                             </div>
                         </div>
                     </f:facet>
@@ -57,6 +58,9 @@
                     </p:column>
                     <p:column headerText="GRADO" sortBy="#{c.grado}" style="width:200px;">
                         <h:outputText value="#{c.grado}"/>
+                    </p:column>
+                    <p:column headerText="OPCIÓN" style="width:180px; text-align:center;">
+                        <p:commandButton value="Inscribirse" icon="pi pi-check" actionListener="#{estudianteInscripcionView.inscribir(c.codigo)}" update=":formInscripcionCursos:tabla-cursos-disponibles :formInscripcionCursos:growl" styleClass="p-button-success p-button-sm"/>
                     </p:column>
                 </p:dataTable>
             </div>

@@ -50,4 +50,9 @@ public class NotaService {
     public NotaDto obtenerNotaPorEstudianteCursoDocente(Long estudiante, Long curso, Long docente){
         return this.notaRepository.obtenerNotaPorEstudianteCursoDocente(estudiante, curso, docente);
     }
+
+    @Transactional(readOnly = true)
+    public List<NotaDto> obtenerNotasPorEstudiante(Long estudiante){
+        return this.notaRepository.obtenerNotasPorEstudiante(estudiante);
+    }
 }
