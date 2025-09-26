@@ -1,11 +1,12 @@
 package org.binaryminds.kinalnotes.dominio.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 public record ModDocenteDto(
         @NotBlank(message = "El nombre es obligatorio")
         String name,
-        @NotBlank(message = "El curso es obligatorio")
-        Integer codigo_curso
+        @NotNull(message = "El curso es obligatorio")
+        Long codigo_curso
 ) {
 }

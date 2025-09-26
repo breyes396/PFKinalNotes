@@ -74,4 +74,12 @@ public class EstudianteEntityRepository implements EstudianteRepository{
         }
         return this.estudianteMapper.toDto(this.crudEstudiante.findByNombre(nombre).orElse(null));
     }
+
+    @Override
+    public List<EstudianteDto> obtenerEstudiantesPorCurso(Long codigoCurso) {
+        if (codigoCurso == null) return List.of();
+        return this.estudianteMapper.toDto(
+                this.crudEstudiante.findByCursos_Codigo(codigoCurso)
+        );
+    }
 }

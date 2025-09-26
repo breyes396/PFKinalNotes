@@ -1,7 +1,11 @@
 package org.binaryminds.kinalnotes.web.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import org.binaryminds.kinalnotes.dominio.dto.LoginRequestDto;
 import org.binaryminds.kinalnotes.dominio.dto.UsuarioDto;
 import org.binaryminds.kinalnotes.dominio.service.UsuarioService;
 import org.springframework.http.HttpStatus;
@@ -23,20 +27,24 @@ public class LoginController {
     }
 
     @PostMapping("/login")
-    @Operation(summary = "Iniciar sesión", description = "Autentica un usuario con email y contraseña")
-    public ResponseEntity<?> login(
-            @RequestParam String email,
-            @RequestParam String password) {
-
+    @Operation(
+            summary = "Iniciar sesión",
+            description = "Autentica un usuario con email y contraseña",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Bienvenido al sistema "),
+                    @ApiResponse(responseCode = "404", description = "Error al auntenticarse, usuario o contrasena incorrectos", content = @Content)
+            }
+    )
+    public ResponseEntity<?> login(@RequestBody @Valid LoginRequestDto request) {
         try {
-            UsuarioDto usuario = usuarioService.obtenerUsuarioPorCorreo(email);
+            UsuarioDto usuario = usuarioService.obtenerUsuarioPorCorreo(request.mail());
 
             if (usuario == null) {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                         .body("Usuario no encontrado");
             }
 
-            if (!usuario.password().equals(password)) {
+            if (!usuario.password().equals(request.password())) {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                         .body("Contraseña incorrecta");
             }
@@ -62,7 +70,14 @@ public class LoginController {
     }
 
     @PostMapping("/registro")
-    @Operation(summary = "Registrar usuario", description = "Crea un nuevo usuario (alias de guardarUsuario)")
+    @Operation(
+            summary = "Registrar usuario",
+            description = "Crea un nuevo usuario (alias de guardarUsuario)",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Usuario agregado con exito "),
+                    @ApiResponse(responseCode = "404", description = "Error al agregar un usuario al sistema", content = @Content)
+            }
+    )
     public ResponseEntity<UsuarioDto> registro(@RequestBody UsuarioDto usuarioDto) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(usuarioService.guardarUsuario(usuarioDto));

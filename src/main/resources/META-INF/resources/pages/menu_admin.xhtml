@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <title>Panel Docente - Kinal Notes</title>
+    <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/primeflex.css"/>
+    <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/themes/primeone-dark.css"/>
+</h:head>
+<h:body style="background:#121212; color:#eee; font-family: 'Inter', Arial, sans-serif;">
+    <h:form id="frmMenuAdmin">
+        <p:growl id="growl" showDetail="true"/>
+        <div class="card" style="margin:1rem;">
+            <p:menubar>
+                <p:menuitem value="Inicio" icon="pi pi-home" outcome="/index.xhtml"/>
+                <p:menuitem value="Administracion" icon="pi pi-users"
+                            outcome="/pages/menu_admin.xhtml" style="font-weight:bold; color:#10b981;"/>
+                <p:menuitem value="Cerrar Sesión" icon="pi pi-sign-out" actionListener="#{authSession.logout}"/>
+            </p:menubar>
+        </div>
+        <div class="card p-4">
+            <h2 style="margin-top:0;">Bienvenido Administrador</h2>
+            <h:panelGroup >
+                <p:button value="Administrar Estudiantes" outcome="/pages/administracion_admin_estudiantes.xhtml"
+                          icon="pi pi-users" styleClass="p-button-success"/>
+            </h:panelGroup>
+            <h:panelGroup>
+                <p:button value="Administrar Usuarios" outcome="/pages/administracion_admin_usuarios.xhtml"
+                          icon="pi pi-users" styleClass="p-button-success"/>
+            </h:panelGroup>
+            <h:panelGroup>
+                <p:button value="Administrar Docentes" outcome="/pages/administracion_estudiantes.xhtml"
+                          icon="pi pi-users" styleClass="p-button-success"/>
+            </h:panelGroup>
+            <h:panelGroup>
+                <p:button value="Administrar Notas" outcome="/pages/administracion_admin_notas.xhtml"
+                          icon="pi pi-users" styleClass="p-button-success"/>
+            </h:panelGroup>
+            <h:panelGroup>
+                <p:button value="Administrar Cursos" outcome="/pages/administracion_admin_cursos.xhtml"
+                          icon="pi pi-users" styleClass="p-button-success"/>
+            </h:panelGroup>
+        </div>
+    </h:form>
+</h:body>
+</html>

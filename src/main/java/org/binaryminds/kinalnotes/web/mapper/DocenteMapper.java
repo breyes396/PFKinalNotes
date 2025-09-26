@@ -15,6 +15,7 @@ public interface DocenteMapper {
 
     @Mapping(source = "nombre", target = "name")
     @Mapping(source = "codigoCurso", target = "codigo_curso")
+    @Mapping(source = "codigoUsuario", target = "codigo_usuario")
     DocenteDto toDto(DocenteEntity entity);
     List<DocenteDto> toDto(Iterable<DocenteEntity> entities);
 

@@ -10,7 +10,6 @@ import org.mapstruct.MappingTarget;
 
 import java.util.List;
 
-
 @Mapper(componentModel = "spring", uses = {RoleMapper.class})
 public interface UsuarioMapper {
 

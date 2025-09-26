@@ -4,8 +4,6 @@ import org.binaryminds.kinalnotes.dominio.dto.DocenteDto;
 import org.binaryminds.kinalnotes.dominio.dto.ModDocenteDto;
 import org.binaryminds.kinalnotes.dominio.exception.DocenteNoExisteException;
 import org.binaryminds.kinalnotes.dominio.exception.DocenteYaExisteException;
-import org.binaryminds.kinalnotes.dominio.exception.EstudianteNoExisteException;
-import org.binaryminds.kinalnotes.dominio.exception.EstudianteYaExisteException;
 import org.binaryminds.kinalnotes.dominio.repository.DocenteRepository;
 import org.binaryminds.kinalnotes.persistence.crud.CrudDocenteEntity;
 import org.binaryminds.kinalnotes.persistence.entity.DocenteEntity;
@@ -13,6 +11,7 @@ import org.binaryminds.kinalnotes.web.mapper.DocenteMapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class DocenteEntityRepository implements DocenteRepository {
@@ -76,5 +75,12 @@ public class DocenteEntityRepository implements DocenteRepository {
             throw new IllegalArgumentException("El nombre no existe en el sistema");
         }
         return this.docenteMapper.toDto(this.crudDocente.findByNombre(nombre).orElse(null));
+    }
+
+    @Override
+    public DocenteDto obtenerDocentePorCodigoUsuario(Long codigoUsuario) {
+        if (codigoUsuario == null) return null;
+        Optional<DocenteEntity> doc = this.crudDocente.findByCodigoUsuario(codigoUsuario);
+        return this.docenteMapper.toDto(doc.orElse(null));
     }
 }

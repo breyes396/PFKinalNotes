@@ -34,4 +34,8 @@ public class EstudianteService {
     public void eliminarEstudiante(Long codigo){
         this.estudianteRepository.eliminarEstudiante(codigo);
     }
+
+    public List<EstudianteDto> obtenerEstudiantesPorCurso(Long codigoCurso){
+        return this.estudianteRepository.obtenerEstudiantesPorCurso(codigoCurso);
+    }
 }

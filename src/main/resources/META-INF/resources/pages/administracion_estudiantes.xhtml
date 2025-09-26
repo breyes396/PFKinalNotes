@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <title>Administración de Estudiantes - Kinal Notes</title>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/primeflex.css"/>
+    <h:outputStylesheet library="css" name="theme.css"/>
+    <link rel="stylesheet" href="#{request.contextPath}/css/theme.css" />
+    <style>
+        body {background:#ffffff; color:#222; font-family:'Inter',Arial,sans-serif; margin:0;}
+        .page-wrapper {padding:1.25rem 1rem 3rem; max-width:1400px; margin:0 auto; box-sizing:border-box;}
+        .card {background:#fff; border:1px solid #e5e7eb; border-radius:6px;}
+        .card.spacing {margin:0 0 1.1rem; padding:.5rem .75rem;}
+        .datatable-wrapper {padding:1rem 1rem 1.25rem;}
+        h3 {margin:0; font-weight:600; letter-spacing:.4px;}
+        .header-box {background:#f1f5f9; border:1px solid #e2e8f0; border-radius:6px; padding:.75rem 1rem; width:100%;}
+        .nota-alta {color:#047857;}
+        .nota-media {color:#b45309;}
+        .nota-baja {color:#dc2626; font-weight:600;}
+        @media (max-width: 768px){ .page-wrapper {padding:1rem .5rem 2rem;} }
+    </style>
+</h:head>
+<h:body>
+    <div class="page-wrapper">
+        <div class="color-bar" style="margin:0 0 .75rem;">
+            <span class="cb-blue"></span><span class="cb-green"></span><span class="cb-yellow"></span><span class="cb-red"></span><span class="cb-dark"></span>
+        </div>
+        <h:form id="formDocenteEstudiantes">
+            <div style="font-size:.6rem; letter-spacing:.5px; color:#555; margin:0 0 .5rem;">
+                <span class="badge badge-blue">ESTUDIANTES</span>
+                <span class="badge badge-green" style="margin-left:4px;">GESTIÓN</span>
+            </div>
+
+            <div class="card spacing card-accent-dark subtle-shadow">
+                <p:menubar>
+                    <p:menuitem value="Menú Docente" icon="pi pi-arrow-left" outcome="/pages/menu_docentes.xhtml"/>
+                    <p:menuitem value="Administrar Estudiantes" icon="pi pi-users"
+                                style="font-weight:bold; color:#059669;"/>
+                    <p:menuitem value="Cerrar Sesión" icon="pi pi-sign-out" actionListener="#{authSession.logout}"/>
+                </p:menubar>
+            </div>
+
+            <div class="neutral-box" style="margin:.25rem 0 1rem; font-size:.7rem;">
+                <strong>Leyenda:</strong>
+                <span class="badge badge-green" style="margin-left:4px;">ALTA &gt;= 80</span>
+                <span class="badge badge-yellow" style="margin-left:4px;">MEDIA 60-79</span>
+                <span class="badge badge-red" style="margin-left:4px;">BAJA &lt; 60</span>
+            </div>
+
+            <div class="card datatable-wrapper card-accent-blue subtle-shadow">
+                <p:dataTable id="tabla-estudiantes" value="#{docenteAdminView.filas}" var="row" widgetVar="tablaEstudiantes"
+                             emptyMessage="No hay estudiantes inscritos en su curso" paginator="true" rows="10"
+                             responsiveLayout="scroll">
+                    <f:facet name="header">
+                        <div class="header-box" style="display:flex; align-items:center; justify-content:space-between;">
+                            <h3 class="header-accent" style="margin:0;">Estudiantes del curso (Código: #{authSession.docenteCursoCodigo})</h3>
+                            <div style="font-size:.55rem; letter-spacing:.5px; color:#555;">
+                                <span class="badge badge-green">ALTA</span>
+                                <span class="badge badge-yellow" style="margin-left:2px;">MEDIA</span>
+                                <span class="badge badge-red" style="margin-left:2px;">BAJA</span>
+                            </div>
+                        </div>
+                    </f:facet>
+                    <p:column headerText="ID" sortBy="#{row.estudianteId}" style="width:80px;">
+                        <h:outputText value="#{row.estudianteId}"/>
+                    </p:column>
+                    <p:column headerText="NOMBRE" sortBy="#{row.nombre}" filterBy="#{row.nombre}" filterMatchMode="contains">
+                        <h:outputText value="#{row.nombre}"/>
+                    </p:column>
+                    <p:column headerText="APELLIDO" sortBy="#{row.apellido}" filterBy="#{row.apellido}" filterMatchMode="contains">
+                        <h:outputText value="#{row.apellido}"/>
+                    </p:column>
+                    <p:column headerText="NOTA" sortBy="#{row.nota}" style="width:110px; text-align:center;">
+                        <h:outputText value="#{row.nota != null ? row.nota : '-'}" style="#{docenteAdminView.styleNota(row.nota)}"/>
+                    </p:column>
+                    <p:column headerText="OPCIÓN" style="width:170px; text-align:center;">
+                        <p:commandButton value="Asignar Nota" icon="pi pi-pencil"
+                                         actionListener="#{docenteAdminView.prepararAsignacion(row)}"
+                                         process="@this"
+                                         update=":formDocenteEstudiantes:dialogoNotaPanel :formDocenteEstudiantes:growl"
+                                         oncomplete="PF('dlgNota').show()" styleClass="p-button-sm"/>
+                    </p:column>
+                </p:dataTable>
+            </div>
+
+            <p:dialog id="dialogNota" header="Asignar Nota" widgetVar="dlgNota" modal="true" draggable="false" resizable="false" showEffect="fade" closable="true" styleClass="card-accent-yellow">
+                <p:outputPanel id="dialogoNotaPanel" class="ui-fluid">
+                    <h:inputHidden id="estudianteIdSel" value="#{docenteAdminView.estudianteIdSeleccionado}"/>
+                    <h:panelGroup rendered="#{not empty docenteAdminView.filaSeleccionada}">
+                        <p:panel header="Estudiante" styleClass="mb-3" style="border:1px solid #e5e7eb;">
+                            <p style="margin:.25rem 0;"><strong>ID:</strong> #{docenteAdminView.filaSeleccionada.estudianteId}</p>
+                            <p style="margin:.25rem 0;">
+                                <strong>Nombre:</strong> #{docenteAdminView.filaSeleccionada.nombre} #{docenteAdminView.filaSeleccionada.apellido}
+                            </p>
+                            <p style="margin:.25rem 0;"><strong>Nota actual:</strong> <span style="#{docenteAdminView.styleNota(docenteAdminView.filaSeleccionada.nota)}">#{docenteAdminView.filaSeleccionada.nota != null ? docenteAdminView.filaSeleccionada.nota : '-'} </span>
+                            </p>
+                        </p:panel>
+                        <div class="field">
+                            <p:outputLabel for="nuevaNota" value="Nueva Nota (0-100)"/>
+                            <p:inputNumber id="nuevaNota" value="#{docenteAdminView.nuevaNota}" minValue="0" maxValue="100"
+                                           decimalPlaces="0" required="true" requiredMessage="La nota es obligatoria" styleClass="w-full"/>
+                            <p:message for="nuevaNota" display="text"/>
+                        </div>
+                    </h:panelGroup>
+                    <h:panelGroup rendered="#{empty docenteAdminView.filaSeleccionada}">
+                        <p style="color:#dc2626;">Seleccione un estudiante en la tabla.</p>
+                    </h:panelGroup>
+                </p:outputPanel>
+                <f:facet name="footer">
+                    <p:commandButton value="Guardar" icon="pi pi-check" actionListener="#{docenteAdminView.guardarNota}"
+                                     process="@form"
+                                     update=":formDocenteEstudiantes:tabla-estudiantes :formDocenteEstudiantes:dialogoNotaPanel :formDocenteEstudiantes:growl"
+                                     oncomplete="if(!args.validationFailed){PF('dlgNota').hide();}"/>
+                    <p:commandButton value="Cancelar" type="button" icon="pi pi-times" onclick="PF('dlgNota').hide()" class="p-button-secondary"/>
+                </f:facet>
+            </p:dialog>
+        </h:form>
+    </div>
+</h:body>
+</html>
