@@ -8,10 +8,15 @@ import org.binaryminds.kinalnotes.dominio.repository.NotaRepository;
 import org.binaryminds.kinalnotes.persistence.crud.CrudNotaEntity;
 import org.binaryminds.kinalnotes.persistence.entity.NotaEntity;
 import org.binaryminds.kinalnotes.web.mapper.NotaMapper;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Repository;
+
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Repository
 public class NotaEntityRepository implements NotaRepository {
     private final CrudNotaEntity crudNota;
@@ -37,18 +42,42 @@ public class NotaEntityRepository implements NotaRepository {
 
     @Override
     public NotaDto guardarNota(NotaDto notaDto){
+        if(notaDto == null){
+            log.warn("guardarNota llamado con notaDto null");
+            return null;
+        }
+        Optional<NotaEntity> existente = crudNota.findByCodigoEstudianteAndCodigoCursoAndCodigoDocente(
+                notaDto.codigo_estudiante(), notaDto.codigo_curso(), notaDto.codigo_docente());
+        if(existente.isPresent()){
+            log.debug("Nota existente encontrada (reutilizando) codigo={} -> se actualizará calificacion {}", existente.get().getCodigo(), notaDto.calificacion());
+            NotaEntity n = existente.get();
+            n.setCalificacion(notaDto.calificacion());
+            n.setFecha(LocalDate.now());
+            return notaMapper.toDto(crudNota.save(n));
+        }
         NotaEntity nota = this.notaMapper.toEntity(notaDto);
-        this.crudNota.save(nota);
-        return this.notaMapper.toDto(nota);
+        try {
+            this.crudNota.save(nota);
+            log.debug("Nota creada codigo={} estudiante={} curso={} docente={} calificacion={}", nota.getCodigo(), nota.getCodigoEstudiante(), nota.getCodigoCurso(), nota.getCodigoDocente(), nota.getCalificacion());
+            return this.notaMapper.toDto(nota);
+        } catch (DataIntegrityViolationException dive){
+            log.error("Violación de integridad al guardar nota (posible duplicado). Se intentará recuperación.", dive);
+            existente = crudNota.findByCodigoEstudianteAndCodigoCursoAndCodigoDocente(
+                    notaDto.codigo_estudiante(), notaDto.codigo_curso(), notaDto.codigo_docente());
+            return existente.map(notaMapper::toDto).orElse(null);
+        }
     }
 
     @Override
     public NotaDto actualizarNota(Long codigo, ModNotaDto modNotaDto){
         NotaEntity nota = this.crudNota.findById(codigo).orElse(null);
         if (nota == null){
+            log.warn("Intento de actualizar nota inexistente codigo={}", codigo);
             throw new NotaNoExisteException(codigo);
         } else {
+            log.debug("Actualizando nota codigo={} nuevaCalificacion={}", codigo, modNotaDto.calificacion());
             this.notaMapper.modificarEntityFromDto(modNotaDto, nota);
+            nota.setFecha(LocalDate.now());
             return this.notaMapper.toDto(this.crudNota.save(nota));
         }
     }

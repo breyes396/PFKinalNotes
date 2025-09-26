@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
+<html lang="es"
+      xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
@@ -7,15 +8,42 @@
     <title>Registro - Kinal Notes</title>
     <meta charset="UTF-8"/>
     <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/primeflex.css"/>
-    <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/themes/primeone-dark.css"/>
+    <link rel="stylesheet" href="/css/theme.css"/>
+    <style>
+        body {background:#ffffff; color:#222; font-family:'Inter',Arial,sans-serif; margin:0;}
+        .auth-wrapper {min-height:100vh; display:flex; align-items:center; justify-content:center; padding:2rem 1rem; box-sizing:border-box;}
+        .surface-card {background:#fff; border:1px solid #e5e7eb;}
+        h2 {font-weight:600; letter-spacing:.5px;}
+        .small-link {font-size:0.75rem; color:#6b7280;}
+        a {color:#2563eb; text-decoration:none;}
+        .formgrid .field {padding:0 .75rem 1rem; box-sizing:border-box;}
+        .color-bar {display:flex; height:4px; width:100%; margin-bottom:.5rem;}
+        .color-bar span {flex:1; height:100%;}
+        .cb-blue {background:#2563eb;}
+        .cb-green {background:#22c55e;}
+        .cb-yellow {background:#facc15;}
+        .cb-red {background:#ef4444;}
+        .cb-dark {background:#111827;}
+        .header-accent {position:relative; display:inline-block;}
+        .header-accent:after {content:""; position:absolute; width:100%; height:2px; bottom:-2px; left:0; background:linear-gradient(to right, #2563eb, #22c55e, #facc15, #ef4444, #111827);}
+        .neutral-box {background:#f9fafb; border-left:4px solid #2563eb; padding:.75rem 1rem; margin-bottom:1rem; border-radius:.375rem;}
+    </style>
 </h:head>
-<h:body style="background:#111; color:#eee; font-family:'Inter',Arial,sans-serif;">
-<div class="flex align-items-center justify-content-center" style="min-height:100vh;">
-    <div class="surface-card p-4 shadow-2 border-round w-full md:w-5" style="max-width:560px;">
-        <h2 class="text-center" style="margin:0 0 1.2rem;">Crear cuenta</h2>
+<h:body>
+<div class="auth-wrapper">
+    <div class="surface-card p-5 shadow-2 border-round w-full card-accent-yellow subtle-shadow" style="max-width:640px;">
+        <div class="color-bar"><span class="cb-blue"></span><span class="cb-green"></span><span class="cb-yellow"></span><span class="cb-red"></span><span class="cb-dark"></span></div>
+        <div class="text-center" style="font-size:.65rem; letter-spacing:.5px; color:#555; margin-top:-.25rem; margin-bottom:.75rem;">
+            <span class="badge badge-green">REGISTRO</span>
+            <span class="badge badge-blue" style="margin-left:4px;">USUARIO</span>
+        </div>
+        <h2 class="text-center header-accent" style="margin:0 0 1.2rem;">Crear cuenta</h2>
+        <div class="neutral-box" style="margin:-.25rem 0 1rem; font-size:.7rem;">
+            <span class="dot dot-green"></span><strong>Nota:</strong> Los campos cambian según el rol seleccionado.
+        </div>
         <h:form id="frmRegistro" prependId="false">
             <p:messages id="msgs" showDetail="true" closable="true"/>
-            <div class="grid formgrid">
+            <div class="grid formgrid" style="margin:0 -0.75rem;">
                 <div class="col-12 md:col-6 field">
                     <p:outputLabel for="email" value="Correo"/>
                     <p:inputText id="email" value="#{registroView.email}" required="true" placeholder="correo@dominio.com" styleClass="w-full"/>
@@ -34,7 +62,7 @@
                 </div>
             </div>
             <p:outputPanel id="panelExtra">
-                <div class="grid formgrid" style="margin-top:1rem;">
+                <div class="grid formgrid" style="margin:0 -0.75rem;">
                     <h:panelGroup layout="block" styleClass="col-12 md:col-6 field" rendered="#{registroView.student or registroView.teacher}">
                         <p:outputLabel for="nombre" value="Nombre"/>
                         <p:inputText id="nombre" value="#{registroView.nombre}" styleClass="w-full"/>
@@ -51,17 +79,18 @@
                         </p:selectOneMenu>
                     </h:panelGroup>
                 </div>
-                <h:panelGroup rendered="#{registroView.teacher and empty registroView.cursosSelectDocente}" style="color:#f87171; font-size:0.85rem;">
+                <h:panelGroup rendered="#{registroView.teacher and empty registroView.cursosSelectDocente}" style="color:#dc2626; font-size:0.8rem; margin-top:-.5rem; padding:0 .75rem;">
                     No hay cursos disponibles.
                 </h:panelGroup>
             </p:outputPanel>
-            <p:commandButton value="Registrar" actionListener="#{registroView.registrar}" update="@form" icon="pi pi-user-plus" styleClass="w-full mt-4"/>
-            <div class="text-center mt-3" style="font-size:0.85rem;">
-                ¿Ya tienes cuenta?
-                <h:link outcome="/pages/login.xhtml" value="Inicia sesión" style="color:#60a5fa; margin-left:4px;"/>
+            <p:commandButton value="Registrar" actionListener="#{registroView.registrar}" update="@form" icon="pi pi-user-plus" styleClass="w-full mt-3"/>
+            <div class="text-center mt-3" style="font-size:0.85rem; color:#555;">
+                <span class="dot dot-blue"></span>¿Ya tienes cuenta?
+                <h:link outcome="/pages/login.xhtml" value="Inicia sesión" style="margin-left:4px;"/>
             </div>
-            <div class="text-center mt-2">
-                <h:link outcome="/index.xhtml" value="Volver al inicio" style="font-size:0.7rem; color:#999;"/>
+            <div class="text-center mt-2 small-link">
+                <span class="dot dot-black"></span>
+                <h:link outcome="/index.xhtml" value="Volver al inicio"/>
             </div>
         </h:form>
     </div>

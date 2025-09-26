@@ -1,0 +1,4 @@
+package org.binaryminds.kinalnotes.web.controller;
+
+public class EstudianteNotasView {
+}

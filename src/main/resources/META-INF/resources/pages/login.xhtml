@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
+<html lang="es"
+      xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
@@ -7,33 +8,90 @@
     <title>Login - Kinal Notes</title>
     <meta charset="UTF-8"/>
     <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/primeflex.css"/>
-    <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/themes/primeone-dark.css"/>
+    <style>
+        body {background:#ffffff; color:#222; font-family:'Inter',Arial,sans-serif; margin:0;}
+        .auth-wrapper {min-height:100vh; display:flex; align-items:center; justify-content:center; padding:2rem 1rem; box-sizing:border-box;}
+        .surface-card {background:#fff; border:1px solid #e5e7eb;}
+        h2 {font-weight:600; letter-spacing:.5px;}
+        .small-link {font-size:0.75rem; color:#6b7280;}
+        a, .link {color:#2563eb; text-decoration:none;}
+        .color-bar {
+            height: 4px;
+            display: flex;
+            border-radius: 2px;
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+        .color-bar span {
+            flex: 1;
+            height: 100%;
+        }
+        .cb-blue {background: #3b82f6;}
+        .cb-green {background: #4ade80;}
+        .cb-yellow {background: #f59e0b;}
+        .cb-red {background: #ef4444;}
+        .cb-dark {background: #111827;}
+        .header-accent {
+            position: relative;
+            display: inline-block;
+            padding-bottom: 0.5rem;
+        }
+        .header-accent:after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background: linear-gradient(to right, #3b82f6, #4ade80, #f59e0b, #ef4444, #111827);
+        }
+        .info-box {
+            background: #f0f9ff;
+            border-left: 4px solid #3b82f6;
+            padding: 0.5rem 1rem;
+            margin-bottom: 1rem;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+        }
+        .dot {
+            height: 0.5rem;
+            width: 0.5rem;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 0.25rem;
+            vertical-align: middle;
+        }
+        .dot-blue {background: #3b82f6;}
+    </style>
 </h:head>
-<h:body style="background:#111; color:#eee; font-family: 'Inter',Arial,sans-serif;">
-    <div class="flex align-items-center justify-content-center" style="min-height:100vh;">
-        <div class="surface-card p-4 shadow-2 border-round w-full md:w-4" style="max-width:430px;">
-            <h2 class="text-center" style="margin:0 0 1.5rem;">Iniciar Sesión</h2>
+<h:body>
+    <div class="auth-wrapper">
+        <div class="surface-card p-5 shadow-2 border-round w-full card-accent-green subtle-shadow" style="max-width:430px;">
+            <div class="color-bar"><span class="cb-blue"></span><span class="cb-green"></span><span class="cb-yellow"></span><span class="cb-red"></span><span class="cb-dark"></span></div>
+            <h2 class="text-center header-accent" style="margin:0 0 1rem;">Iniciar Sesión</h2>
+            <div class="info-box" style="margin:0 0 1rem; font-size:.7rem;">
+                <strong><span class="dot dot-blue"></span>Consejo:</strong> tus credenciales distinguen mayúsculas/minúsculas.
+            </div>
             <h:form id="frmLogin" prependId="false">
                 <p:messages id="msgs" closable="true" showDetail="true"/>
                 <div class="field mb-3">
                     <p:outputLabel for="email" value="Correo"/>
                     <p:inputText id="email" value="#{loginView.email}" placeholder="correo@dominio.com" styleClass="w-full"/>
                 </div>
-                <div class="field mb-3">
+                <div class="field mb-4">
                     <p:outputLabel for="password" value="Contraseña"/>
                     <p:password id="password" value="#{loginView.password}" feedback="false" styleClass="w-full"/>
                 </div>
                 <p:commandButton value="Entrar" actionListener="#{loginView.login}" update="@form" icon="pi pi-sign-in" styleClass="w-full mb-3"/>
-                <div class="text-center text-500" style="font-size:0.9rem;">
+                <div class="text-center" style="font-size:0.85rem; color:#555;">
                     ¿No tienes una cuenta?
-                    <h:link outcome="/pages/registro.xhtml" value="Regístrate" style="color:#60a5fa; margin-left:4px;"/>
+                    <h:link outcome="/pages/registro.xhtml" value="Regístrate" style="margin-left:4px;"/>
                 </div>
-                <div class="text-center mt-3">
-                    <h:link outcome="/index.xhtml" value="Volver al inicio" style="font-size:0.75rem; color:#999;"/>
+                <div class="text-center mt-3 small-link">
+                    <h:link outcome="/index.xhtml" value="Volver al inicio"/>
                 </div>
             </h:form>
         </div>
     </div>
 </h:body>
 </html>
-
