@@ -1,23 +1,57 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
+<html lang="es"
+      xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui">
 <h:head>
     <title>Kinal Notes - Inicio</title>
+    <meta charset="UTF-8"/>
     <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/primeflex.css"/>
-    <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/themes/primeone-dark.css"/>
+    <link rel="stylesheet" href="/css/theme.css"/>
+    <style>
+        body {background:#ffffff; color:#222; font-family: 'Inter', Arial, sans-serif; margin:0;}
+        .surface-card {background:#ffffff; border:1px solid #e5e7eb;}
+        .app-footer {font-size:0.75rem; color:#666; margin-top:1.75rem; line-height:1.3;}
+        .brand-title {font-weight:600; letter-spacing:.5px;}
+        .hero-wrapper {min-height:100vh; padding:2rem 1rem; box-sizing:border-box;}
+        @media (min-width:768px){ .hero-card {max-width:420px;} }
+        .color-bar {
+            height: 4px;
+            display: flex;
+            border-radius: 2px;
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+        .color-bar span {
+            flex: 1;
+            height: 100%;
+        }
+        .cb-blue {background: linear-gradient(to right, #3b82f6, #60a5fa);}
+        .cb-green {background: linear-gradient(to right, #4ade80, #86efac);}
+        .cb-yellow {background: linear-gradient(to right, #facc15, #fde047);}
+        .cb-red {background: linear-gradient(to right, #f87171, #fca5a5);}
+        .cb-dark {background: linear-gradient(to right, #374151, #6b7280);}
+    </style>
 </h:head>
-<h:body style="background:#121212; color:#eee; font-family: 'Inter', Arial, sans-serif;">
-    <div class="flex align-items-center justify-content-center" style="min-height:100vh;">
-        <div class="surface-card p-4 shadow-2 border-round w-full md:w-4">
-            <h2 class="text-center mb-3" style="margin-top:0;">Kinal Notes</h2>
-            <p class="text-center text-500 mb-4" style="margin:0 0 2rem;">Gestiona docentes, estudiantes y notas</p>
+<h:body>
+    <div class="flex align-items-center justify-content-center hero-wrapper">
+        <div class="surface-card p-5 shadow-2 border-round w-full hero-card card-accent-blue subtle-shadow">
+            <div class="color-bar"><span class="cb-blue"></span><span class="cb-green"></span><span class="cb-yellow"></span><span class="cb-red"></span><span class="cb-dark"></span></div>
+            <h2 class="text-center mb-2 brand-title header-accent" style="margin-top:0;">Kinal Notes</h2>
+            <p class="text-center mb-4" style="margin:0 0 2rem; font-size:0.95rem; color:#555;">Gestiona docentes, estudiantes y notas de forma sencilla.</p>
             <div class="flex flex-column gap-3">
                 <p:button value="Iniciar Sesión" outcome="/pages/login.xhtml" styleClass="w-full" icon="pi pi-sign-in"/>
                 <p:button value="Registrarse" outcome="/pages/registro.xhtml" styleClass="w-full p-button-secondary" icon="pi pi-user-plus"/>
+            </div>
+            <div class="app-footer text-center">
+                <div class="mb-1"><span class="dot dot-blue"></span>Proyecto: <strong>Kinal Notes</strong></div>
+                <div class="text-soft" style="font-size:0.7rem;">
+                    <span class="dot dot-green"></span>Wilson Florian (2024392)
+                    <span class="dot dot-yellow" style="margin-left:8px;"></span>Billy Reyes (2024396)
+                    <span class="dot dot-red" style="margin-left:8px;"></span>Anderson Sosa (2024449)
+                </div>
             </div>
         </div>
     </div>
 </h:body>
 </html>
-

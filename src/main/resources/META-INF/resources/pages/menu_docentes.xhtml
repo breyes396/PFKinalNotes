@@ -1,35 +1,64 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
+<html lang="es"
+      xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
 <h:head>
     <title>Panel Docente - Kinal Notes</title>
     <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/primeflex.css"/>
-    <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/themes/primeone-dark.css"/>
+    <h:outputStylesheet library="css" name="theme.css"/>
+    <link rel="stylesheet" href="#{request.contextPath}/css/theme.css" />
+    <style>
+        body {background:#ffffff; color:#222; font-family:'Inter',Arial,sans-serif; margin:0;}
+        .page-wrapper {padding:1.25rem 1rem 2.5rem; box-sizing:border-box; max-width:1100px; margin:0 auto;}
+        .card {background:#fff; border:1px solid #e5e7eb; border-radius:6px;}
+        .card.padded {padding:1.5rem;}
+        h2 {margin:0 0 1rem; font-weight:600; letter-spacing:.5px;}
+        .menubar-wrapper {margin-bottom:1rem;}
+        .status-warning {color:#b45309; background:#fef3c7; padding:.75rem 1rem; border:1px solid #fcd34d; border-radius:4px; font-size:.9rem;}
+        .panel-actions {margin-top:1rem;}
+    </style>
 </h:head>
-<h:body style="background:#121212; color:#eee; font-family: 'Inter', Arial, sans-serif;">
-    <h:form id="frmMenuDocente">
-        <p:growl id="growl" showDetail="true"/>
-        <div class="card" style="margin:1rem;">
-            <p:menubar>
-                <p:menuitem value="Inicio" icon="pi pi-home" outcome="/index.xhtml"/>
-                <p:menuitem value="Administrar Estudiantes" icon="pi pi-users"
-                            outcome="/pages/administracion_estudiantes.xhtml" style="font-weight:bold; color:#10b981;"/>
-                <p:menuitem value="Cerrar Sesión" icon="pi pi-sign-out" actionListener="#{authSession.logout}"/>
-            </p:menubar>
+<h:body>
+    <div class="page-wrapper">
+        <div class="color-bar" style="margin:0 0 1rem;">
+            <span class="cb-blue"></span><span class="cb-green"></span><span class="cb-yellow"></span><span class="cb-red"></span><span class="cb-dark"></span>
         </div>
-        <div class="card p-4">
-            <h2 style="margin-top:0;">Bienvenido Docente</h2>
-            <h:panelGroup rendered="#{authSession.docenteCursoCodigo != null}">
-                <p>Curso asignado (código): <strong>#{authSession.docenteCursoCodigo}</strong></p>
-                <p:button value="Administrar Estudiantes" outcome="/pages/administracion_estudiantes.xhtml"
-                          icon="pi pi-users" styleClass="p-button-success"/>
-            </h:panelGroup>
-            <h:panelGroup rendered="#{authSession.docenteCursoCodigo == null}">
-                <p style="color:#fbbf24;">Aún no tiene curso asignado.</p>
-            </h:panelGroup>
-        </div>
-    </h:form>
+        <h:form id="frmMenuDocente">
+            <p:growl id="growl" showDetail="true"/>
+            <div class="card menubar-wrapper card-accent-dark subtle-shadow" style="padding:.25rem .75rem;">
+                <p:menubar>
+                    <p:menuitem value="Inicio" icon="pi pi-home" outcome="/index.xhtml"/>
+                    <p:menuitem value="Administrar Estudiantes" icon="pi pi-users"
+                                outcome="/pages/administracion_estudiantes.xhtml" style="font-weight:bold; color:#059669;"/>
+                    <p:menuitem value="Cerrar Sesión" icon="pi pi-sign-out" actionListener="#{authSession.logout}"/>
+                </p:menubar>
+            </div>
+            <div class="card padded card-accent-green subtle-shadow">
+                <div style="font-size:.65rem; letter-spacing:.5px; color:#555; margin:-.25rem 0 .75rem;">
+                    <span class="badge badge-yellow">PANEL</span>
+                    <span class="badge badge-blue" style="margin-left:4px;">DOCENTE</span>
+                </div>
+                <h2 class="header-accent" style="margin-top:0;">Bienvenido Docente</h2>
+                <div class="neutral-box" style="margin:-.5rem 0 1.1rem; font-size:.7rem;">
+                    <span class="dot dot-blue"></span>Gestione estudiantes y revise notas en tiempo real.
+                </div>
+                <h:panelGroup rendered="#{authSession.docenteCursoCodigo != null}">
+                    <div class="success-box" style="margin:0 0 1rem;">
+                        <strong><span class="dot dot-green"></span>Curso activo:</strong> Código <span class="text-blue">#{authSession.docenteCursoCodigo}</span>
+                    </div>
+                    <div class="panel-actions">
+                        <p:button value="Administrar Estudiantes" outcome="/pages/administracion_estudiantes.xhtml" icon="pi pi-users" styleClass="p-button-success"/>
+                    </div>
+                </h:panelGroup>
+                <h:panelGroup rendered="#{authSession.docenteCursoCodigo == null}">
+                    <div class="warn-box" style="margin:0 0 1rem;">
+                        <strong><span class="dot dot-yellow"></span>Atención:</strong> Aún no tiene curso asignado.
+                    </div>
+                </h:panelGroup>
+            </div>
+        </h:form>
+    </div>
 </h:body>
 </html>

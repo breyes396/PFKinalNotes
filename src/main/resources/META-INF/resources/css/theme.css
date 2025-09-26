@@ -1,0 +1,94 @@
+:root {
+  --c-black:#111827;
+  --c-black-soft:#334155;
+  --c-green:#059669;
+  --c-green-soft:#10b981;
+  --c-red:#dc2626;
+  --c-yellow:#f59e0b;
+  --c-blue:#2563eb;
+  --c-blue-soft:#3b82f6;
+  --c-border:#e5e7eb;
+  --c-bg:#ffffff;
+  --c-text:#222;
+}
+
+body {background:var(--c-bg); color:var(--c-text);}
+
+h1,h2,h3,h4 {color:var(--c-black);}
+
+.surface-card {background:#fff; border:1px solid var(--c-border);}
+.card-accent-blue {border-left:4px solid var(--c-blue);}
+.card-accent-green {border-left:4px solid var(--c-green-soft);}
+.card-accent-red {border-left:4px solid var(--c-red);}
+.card-accent-yellow {border-left:4px solid var(--c-yellow);}
+.card-accent-dark {border-left:4px solid var(--c-black-soft);}
+
+/* Utilidades texto */
+.text-green {color:var(--c-green)!important;}
+.text-red {color:var(--c-red)!important;}
+.text-yellow {color:var(--c-yellow)!important;}
+.text-blue {color:var(--c-blue)!important;}
+.text-black-soft {color:var(--c-black-soft)!important;}
+.muted {color:#6b7280!important;}
+
+/* Boxes informativos */
+.info-box, .success-box, .warn-box, .danger-box, .neutral-box {padding:.75rem .95rem; border:1px solid var(--c-border); border-radius:6px; font-size:.8rem; line-height:1.25; background:#fff; position:relative;}
+.info-box {border-left:4px solid var(--c-blue);}
+.success-box {border-left:4px solid var(--c-green-soft);}
+.warn-box {border-left:4px solid var(--c-yellow);}
+.danger-box {border-left:4px solid var(--c-red);}
+.neutral-box {border-left:4px solid var(--c-black-soft);}
+.info-box strong, .success-box strong, .warn-box strong, .danger-box strong {font-weight:600;}
+
+/* Pills */
+.pill {display:inline-block; padding:3px 10px; border-radius:999px; font-size:.6rem; letter-spacing:.5px; font-weight:600; background:#f1f5f9; color:var(--c-black-soft);}
+.pill-blue {background:rgba(37,99,235,.12); color:var(--c-blue);}
+.pill-green {background:rgba(16,185,129,.15); color:var(--c-green);}
+.pill-red {background:rgba(220,38,38,.12); color:var(--c-red);}
+.pill-yellow {background:rgba(245,158,11,.18); color:var(--c-yellow);}
+.pill-dark {background:rgba(51,65,85,.18); color:var(--c-black-soft);}
+
+/* Dots y badges existentes */
+.text-soft {color:var(--c-black-soft);}
+.badge {display:inline-block; padding:2px 6px; font-size:.65rem; border-radius:4px; font-weight:500; letter-spacing:.5px;}
+.badge-green {background:rgba(16,185,129,.12); color:var(--c-green);}
+.badge-red {background:rgba(220,38,38,.12); color:var(--c-red);}
+.badge-yellow {background:rgba(245,158,11,.15); color:var(--c-yellow);}
+.badge-blue {background:rgba(37,99,235,.15); color:var(--c-blue);}
+
+.dot {display:inline-block; width:8px; height:8px; border-radius:50%; margin-right:4px; vertical-align:middle; opacity:.9;}
+.dot-green {background:var(--c-green);}
+.dot-red {background:var(--c-red);}
+.dot-yellow {background:var(--c-yellow);}
+.dot-blue {background:var(--c-blue);}
+.dot-black {background:var(--c-black-soft);}
+
+.footer-meta {font-size:0.7rem; color:#555; line-height:1.25;}
+.link-inline a {color:var(--c-blue); text-decoration:none;}
+.link-inline a:hover {text-decoration:underline;}
+
+/* Tabla de notas */
+.nota-alta {color:var(--c-green); font-weight:500;}
+.nota-media {color:var(--c-yellow); font-weight:500;}
+.nota-baja {color:var(--c-red); font-weight:600;}
+
+/* Focus */
+input:focus, .ui-inputfield:focus {outline:2px solid var(--c-blue-soft); outline-offset:1px;}
+
+/* Botones custom */
+.btn-primary-custom {background:var(--c-blue); border:1px solid var(--c-blue);}
+.btn-primary-custom:hover {background:var(--c-blue-soft);}
+
+/* Separador decorativo multi-color */
+.color-bar {display:flex; height:4px; width:100%; margin:.75rem 0 1.25rem; border-radius:3px; overflow:hidden;}
+.color-bar span {flex:1;}
+.color-bar .cb-blue {background:var(--c-blue);}
+.color-bar .cb-green {background:var(--c-green-soft);}
+.color-bar .cb-yellow {background:var(--c-yellow);}
+.color-bar .cb-red {background:var(--c-red);}
+.color-bar .cb-dark {background:var(--c-black-soft);}
+
+/* Sutilezas */
+.subtle-shadow {box-shadow:0 1px 2px rgba(0,0,0,.05), 0 0 0 1px rgba(0,0,0,.03);}
+.header-accent {position:relative; padding-bottom:.35rem;}
+.header-accent:after {content:""; position:absolute; left:0; bottom:0; width:48px; height:3px; background:linear-gradient(90deg,var(--c-blue),var(--c-green-soft)); border-radius:2px;}
