@@ -23,3 +23,6 @@ localhost:8090/kinalnotes/api/v1/usuarios
         "password": ""
       
 }
+
+LINK VIDEO ENTREGA FINAL:
+https://cetkinal-my.sharepoint.com/:f:/g/personal/breyes-2024396_kinal_edu_gt/EqgYhz-zPRZBgo-0efXCpPEBompZBDu93_7gcurdVDBQWA?e=A63RBE
