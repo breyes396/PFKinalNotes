@@ -21,6 +21,9 @@ public class AuthSession implements Serializable {
     private Role role;
     private Long docenteCodigo; // si es docente
     private Long docenteCursoCodigo; // curso que imparte
+    private String docenteCursoNombre; // nombre del curso que imparte
+    private String docenteCursoGrado; // grado/nivel del curso
+    private Long estudianteCodigo; // si es estudiante
 
     public boolean isLogged(){
         return usuarioId != null;
@@ -37,6 +40,9 @@ public class AuthSession implements Serializable {
         role = null;
         docenteCodigo = null;
         docenteCursoCodigo = null;
+        docenteCursoNombre = null;
+        docenteCursoGrado = null;
+        estudianteCodigo = null;
     }
     public void logout(){
         clear();
@@ -46,5 +52,15 @@ public class AuthSession implements Serializable {
         } catch (IOException e) {
             // ignorar por simplicidad
         }
+    }
+    // Presentación combinada: Nombre (Grado) o fallback a código
+    public String getDocenteCursoNombreGrado(){
+        if(docenteCursoNombre == null){
+            return docenteCursoCodigo != null ? String.valueOf(docenteCursoCodigo) : "";
+        }
+        if(docenteCursoGrado != null && !docenteCursoGrado.isBlank()){
+            return docenteCursoNombre + " (" + docenteCursoGrado + ")";
+        }
+        return docenteCursoNombre;
     }
 }

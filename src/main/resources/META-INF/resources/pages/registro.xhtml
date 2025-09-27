@@ -30,70 +30,67 @@
     </style>
 </h:head>
 <h:body>
-<div class="auth-wrapper">
-    <div class="surface-card p-5 shadow-2 border-round w-full card-accent-yellow subtle-shadow" style="max-width:640px;">
-        <div class="color-bar"><span class="cb-blue"></span><span class="cb-green"></span><span class="cb-yellow"></span><span class="cb-red"></span><span class="cb-dark"></span></div>
-        <div class="text-center" style="font-size:.65rem; letter-spacing:.5px; color:#555; margin-top:-.25rem; margin-bottom:.75rem;">
-            <span class="badge badge-green">REGISTRO</span>
-            <span class="badge badge-blue" style="margin-left:4px;">USUARIO</span>
-        </div>
-        <h2 class="text-center header-accent" style="margin:0 0 1.2rem;">Crear cuenta</h2>
-        <div class="neutral-box" style="margin:-.25rem 0 1rem; font-size:.7rem;">
-            <span class="dot dot-green"></span><strong>Nota:</strong> Los campos cambian según el rol seleccionado.
-        </div>
-        <h:form id="frmRegistro" prependId="false">
-            <p:messages id="msgs" showDetail="true" closable="true"/>
-            <div class="grid formgrid" style="margin:0 -0.75rem;">
-                <div class="col-12 md:col-6 field">
-                    <p:outputLabel for="email" value="Correo"/>
-                    <p:inputText id="email" value="#{registroView.email}" required="true" placeholder="correo@dominio.com" styleClass="w-full"/>
-                </div>
-                <div class="col-12 md:col-6 field">
-                    <p:outputLabel for="password" value="Contraseña"/>
-                    <p:password id="password" value="#{registroView.password}" feedback="false" required="true" styleClass="w-full"/>
-                </div>
-                <div class="col-12 md:col-6 field">
-                    <p:outputLabel for="rol" value="Rol"/>
-                    <p:selectOneMenu id="rol" value="#{registroView.role}" styleClass="w-full" required="true">
-                        <f:selectItem itemLabel="Seleccione" itemValue=""/>
-                        <f:selectItems value="#{registroView.rolesPermitidos}" var="r" itemLabel="#{registroView.roleLabel(r)}" itemValue="#{r}"/>
-                        <p:ajax update="panelExtra"/>
-                    </p:selectOneMenu>
-                </div>
+    <div class="auth-wrapper">
+        <div class="surface-card p-5 shadow-2 border-round w-full card-accent-yellow subtle-shadow" style="max-width:640px;">
+            <div class="color-bar"><span class="cb-blue"></span><span class="cb-green"></span><span class="cb-yellow"></span><span class="cb-red"></span><span class="cb-dark"></span></div>
+            <div class="text-center" style="font-size:.65rem; letter-spacing:.5px; color:#555; margin-top:-.25rem; margin-bottom:.75rem;">
+                <span class="badge badge-green">REGISTRO</span>
+                <span class="badge badge-blue" style="margin-left:4px;">USUARIO</span>
             </div>
-            <p:outputPanel id="panelExtra">
+            <h2 class="text-center header-accent" style="margin:0 0 1.2rem;">Crear cuenta</h2>
+            <h:form id="frmRegistro" prependId="false">
+                <p:messages id="msgs" showDetail="true" closable="true"/>
                 <div class="grid formgrid" style="margin:0 -0.75rem;">
-                    <h:panelGroup layout="block" styleClass="col-12 md:col-6 field" rendered="#{registroView.student or registroView.teacher}">
-                        <p:outputLabel for="nombre" value="Nombre"/>
-                        <p:inputText id="nombre" value="#{registroView.nombre}" styleClass="w-full"/>
-                    </h:panelGroup>
-                    <h:panelGroup layout="block" styleClass="col-12 md:col-6 field" rendered="#{registroView.student}">
-                        <p:outputLabel for="apellido" value="Apellido"/>
-                        <p:inputText id="apellido" value="#{registroView.apellido}" styleClass="w-full"/>
-                    </h:panelGroup>
-                    <h:panelGroup layout="block" styleClass="col-12 md:col-6 field" rendered="#{registroView.teacher}">
-                        <p:outputLabel for="curso" value="Curso disponible"/>
-                        <p:selectOneMenu id="curso" value="#{registroView.cursoSeleccionado}" styleClass="w-full">
+                    <div class="col-12 md:col-6 field">
+                        <p:outputLabel for="email" value="Correo"/>
+                        <p:inputText id="email" value="#{registroView.email}" required="true" placeholder="correo@dominio.com" styleClass="w-full"/>
+                    </div>
+                    <div class="col-12 md:col-6 field">
+                        <p:outputLabel for="password" value="Contraseña"/>
+                        <p:password id="password" value="#{registroView.password}" feedback="false" required="true" styleClass="w-full"/>
+                    </div>
+                    <div class="col-12 md:col-6 field">
+                        <p:outputLabel for="rol" value="Rol"/>
+                        <p:selectOneMenu id="rol" value="#{registroView.role}" styleClass="w-full" required="true">
                             <f:selectItem itemLabel="Seleccione" itemValue=""/>
-                            <f:selectItems value="#{registroView.cursosSelectDocente}"/>
+                            <f:selectItems value="#{registroView.rolesPermitidos}" var="r" itemLabel="#{registroView.roleLabel(r)}" itemValue="#{r}"/>
+                            <p:ajax update="panelExtra"/>
                         </p:selectOneMenu>
-                    </h:panelGroup>
+                    </div>
                 </div>
-                <h:panelGroup rendered="#{registroView.teacher and empty registroView.cursosSelectDocente}" style="color:#dc2626; font-size:0.8rem; margin-top:-.5rem; padding:0 .75rem;">
-                    No hay cursos disponibles.
-                </h:panelGroup>
-            </p:outputPanel>
-            <p:commandButton value="Registrar" actionListener="#{registroView.registrar}" update="@form" icon="pi pi-user-plus" styleClass="w-full mt-3"/>
-            <div class="text-center mt-3" style="font-size:0.85rem; color:#555;">
-                <span class="dot dot-blue"></span>¿Ya tienes cuenta?
-                <h:link outcome="/pages/login.xhtml" value="Inicia sesión" style="margin-left:4px;"/>
-            </div>
-            <div class="text-center mt-2 small-link">
-                <span class="dot dot-black"></span>
-                <h:link outcome="/index.xhtml" value="Volver al inicio"/>
-            </div>
-        </h:form>
+                <p:outputPanel id="panelExtra">
+                    <div class="grid formgrid" style="margin:0 -0.75rem;">
+                        <h:panelGroup layout="block" styleClass="col-12 md:col-6 field" rendered="#{registroView.student or registroView.teacher}">
+                            <p:outputLabel for="nombre" value="Nombre"/>
+                            <p:inputText id="nombre" value="#{registroView.nombre}" styleClass="w-full"/>
+                        </h:panelGroup>
+                        <h:panelGroup layout="block" styleClass="col-12 md:col-6 field" rendered="#{registroView.student}">
+                            <p:outputLabel for="apellido" value="Apellido"/>
+                            <p:inputText id="apellido" value="#{registroView.apellido}" styleClass="w-full"/>
+                        </h:panelGroup>
+                        <h:panelGroup layout="block" styleClass="col-12 md:col-6 field" rendered="#{registroView.teacher}">
+                            <p:outputLabel for="curso" value="Curso disponible"/>
+                            <p:selectOneMenu id="curso" value="#{registroView.cursoSeleccionado}" styleClass="w-full">
+                                <f:selectItem itemLabel="Seleccione" itemValue=""/>
+                                <f:selectItems value="#{registroView.cursosSelectDocente}"/>
+                            </p:selectOneMenu>
+                        </h:panelGroup>
+                    </div>
+                    <h:panelGroup rendered="#{registroView.teacher and empty registroView.cursosSelectDocente}" style="color:#dc2626; font-size:0.8rem; margin-top:-.5rem; padding:0 .75rem;">
+                        No hay cursos disponibles.
+                    </h:panelGroup>
+                </p:outputPanel>
+                <p:commandButton value="Registrar" actionListener="#{registroView.registrar}" update="@form" icon="pi pi-user-plus" styleClass="w-full mt-3"/>
+                <div class="text-center mt-3" style="font-size:0.85rem; color:#555;">
+                    <span class="dot dot-blue"></span>¿Ya tienes cuenta?
+                    <h:link outcome="/pages/login.xhtml" value="Inicia sesión" style="margin-left:4px;"/>
+                </div>
+                <div class="text-center mt-2 small-link">
+                    <span class="dot dot-black"></span>
+                    <h:link outcome="/index.xhtml" value="Volver al inicio"/>
+                </div>
+            </h:form>
+        </div>
     </div>
-</div>
 </h:body>
 </html>
