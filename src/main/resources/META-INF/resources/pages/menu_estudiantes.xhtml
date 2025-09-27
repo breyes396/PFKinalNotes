@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <title>Panel Estudiante - Kinal Notes</title>
+    <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/primeflex.css"/>
+    <h:outputStylesheet library="css" name="theme.css"/>
+    <style>
+        body {background:#ffffff; color:#222; font-family:'Inter',Arial,sans-serif; margin:0;}
+        .page-wrapper {padding:1.25rem 1rem 2.5rem; box-sizing:border-box; max-width:1200px; margin:0 auto;}
+        .card {background:#fff; border:1px solid #e5e7eb; border-radius:6px;}
+        .card.padded {padding:1.5rem;}
+        h2 {margin:0 0 1rem; font-weight:600; letter-spacing:.5px;}
+        .menubar-wrapper {margin-bottom:1rem;}
+        .section-title {font-size:1.05rem; font-weight:600; margin:0 0 .75rem;}
+        .badge-role {font-size:.65rem; letter-spacing:.5px; color:#555; margin:-.25rem 0 .75rem;}
+        .nota-pill {padding:.15rem .5rem; border-radius:12px; font-size:.7rem; font-weight:600; display:inline-block;}
+        /* Botón rojo personalizado para Dar de Baja */
+        .btn-baja-roja.p-button, .btn-baja-roja.ui-button, .p-button.btn-baja-roja {background:#dc2626 !important; border:1px solid #b91c1c !important; color:#fff !important;}
+        .btn-baja-roja.p-button:enabled:hover, .btn-baja-roja.ui-button:enabled:hover, .p-button.btn-baja-roja:enabled:hover {background:#b91c1c !important; border-color:#991b1b !important;}
+        .btn-baja-roja.p-button:enabled:active, .btn-baja-roja.ui-button:enabled:active, .p-button.btn-baja-roja:enabled:active {background:#991b1b !important; border-color:#7f1d1d !important;}
+        .btn-baja-roja .pi {color:#fff !important;}
+    </style>
+</h:head>
+<h:body>
+    <h:form id="frmMenuEstudiante">
+        <p:growl id="growl" showDetail="true" life="3500"/>
+        <div class="page-wrapper">
+            <div class="color-bar" style="margin:0 0 1rem;">
+                <span class="cb-blue"></span><span class="cb-green"></span><span class="cb-yellow"></span><span class="cb-red"></span><span class="cb-dark"></span>
+            </div>
+            <div class="card menubar-wrapper card-accent-blue subtle-shadow" style="padding:.25rem .75rem;">
+                <p:menubar>
+                    <p:menuitem value="Inicio" icon="pi pi-home" outcome="/index.xhtml"/>
+                    <p:menuitem value="Cerrar Sesión" icon="pi pi-sign-out" actionListener="#{authSession.logout}"/>
+                </p:menubar>
+            </div>
+            <div class="card padded card-accent-blue subtle-shadow">
+                <div class="badge-role">
+                    <span class="badge badge-blue">PANEL</span>
+                    <span class="badge badge-green" style="margin-left:4px;">ESTUDIANTE</span>
+                </div>
+                <h2 class="header-accent" style="margin-top:0;">Bienvenido Estudiante</h2>
+                <div class="neutral-box" style="margin:-.5rem 0 1.1rem; font-size:.7rem;">
+                    <span class="dot dot-blue"></span>Consulta tus cursos, notas y gestiona inscripciones.
+                </div>
+                <p:tabView>
+                    <p:tab title="Cursos Inscritos">
+                        <h:panelGroup id="panelCursosInscritos" rendered="#{not empty estudianteMenuView.cursosInscritos}">
+                            <p:dataTable value="#{estudianteMenuView.cursosInscritos}" var="c" stripedRows="true" styleClass="p-datatable-sm"
+                                         emptyMessage="No hay cursos inscritos">
+                                <p:column headerText="Código" style="width:90px">#{c.codigo}</p:column>
+                                <p:column headerText="Nombre">#{c.nombre}</p:column>
+                                <p:column headerText="Grado" style="width:140px">#{c.grado}</p:column>
+                                <p:column headerText="Nota" style="width:120px; text-align:center;">
+                                    <h:panelGroup>
+                                    <span style="#{estudianteMenuView.styleNota(c.nota)}">
+                                        #{c.nota != null ? c.nota : '-'}
+                                    </span>
+                                    </h:panelGroup>
+                                </p:column>
+                                <p:column headerText="Acción" style="width:150px; text-align:center;">
+                                    <p:commandButton value="Dar de Baja" icon="pi pi-times" styleClass="p-button-sm btn-baja-roja" style="background:#dc2626;border:1px solid #b91c1c;color:#fff"
+                                                     update=":frmMenuEstudiante:growl :frmMenuEstudiante:panelCursosInscritos :frmMenuEstudiante:panelCursosDisponibles"
+                                                     actionListener="#{estudianteMenuView.baja(c.codigo)}"
+                                                     process="@this"/>
+                                </p:column>
+                            </p:dataTable>
+                        </h:panelGroup>
+                        <h:panelGroup rendered="#{empty estudianteMenuView.cursosInscritos}">
+                            <div class="warn-box">Aún no estás inscrito en ningún curso.</div>
+                        </h:panelGroup>
+                    </p:tab>
+                    <p:tab title="Cursos Disponibles">
+                        <p:dataTable id="panelCursosDisponibles" value="#{estudianteMenuView.cursosDisponibles}" var="d" stripedRows="true" styleClass="p-datatable-sm"
+                                     emptyMessage="No hay cursos disponibles">
+                            <p:column headerText="Código" style="width:90px">#{d.codigo}</p:column>
+                            <p:column headerText="Nombre">#{d.nombre}</p:column>
+                            <p:column headerText="Grado" style="width:140px">#{d.grado}</p:column>
+                            <p:column headerText="Estado" style="width:130px; text-align:center;">
+                                <h:panelGroup rendered="#{estudianteMenuView.estaInscrito(d.codigo)}">
+                                    <span class="badge badge-green">Inscrito</span>
+                                </h:panelGroup>
+                                <h:panelGroup rendered="#{not estudianteMenuView.estaInscrito(d.codigo)}">
+                                    <span class="badge badge-gray">Disponible</span>
+                                </h:panelGroup>
+                            </p:column>
+                            <p:column headerText="Acción" style="width:160px; text-align:center;">
+                                <h:panelGroup rendered="#{not estudianteMenuView.estaInscrito(d.codigo)}">
+                                    <p:commandButton value="Inscribirse" icon="pi pi-plus" styleClass="p-button-success p-button-sm"
+                                                     update=":frmMenuEstudiante:growl :frmMenuEstudiante:panelCursosInscritos :frmMenuEstudiante:panelCursosDisponibles"
+                                                     actionListener="#{estudianteMenuView.inscribir(d.codigo)}"
+                                                     process="@this"/>
+                                </h:panelGroup>
+                                <h:panelGroup rendered="#{estudianteMenuView.estaInscrito(d.codigo)}">
+                                    <p:commandButton value="Dar de Baja" icon="pi pi-times" styleClass="p-button-sm btn-baja-roja" style="background:#dc2626;border:1px solid #b91c1c;color:#fff"
+                                                     update=":frmMenuEstudiante:growl :frmMenuEstudiante:panelCursosInscritos :frmMenuEstudiante:panelCursosDisponibles"
+                                                     actionListener="#{estudianteMenuView.baja(d.codigo)}"
+                                                     process="@this"/>
+                                </h:panelGroup>
+                            </p:column>
+                        </p:dataTable>
+                    </p:tab>
+                </p:tabView>
+            </div>
+        </div>
+    </h:form>
+</h:body>
+</html>

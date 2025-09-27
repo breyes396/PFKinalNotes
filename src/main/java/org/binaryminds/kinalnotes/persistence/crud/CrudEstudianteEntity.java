@@ -11,4 +11,5 @@ public interface CrudEstudianteEntity extends CrudRepository<EstudianteEntity, L
     EstudianteEntity findFirstByNombre(String nombre);
     Optional<EstudianteEntity> findByNombre(String nombre);
     java.util.List<EstudianteEntity> findByCursos_Codigo(Long codigoCurso);
+    Optional<EstudianteEntity> findByUsuario_Codigo(Long codigoUsuario);
 }

@@ -46,7 +46,8 @@
                 </div>
                 <h:panelGroup rendered="#{authSession.docenteCursoCodigo != null}">
                     <div class="success-box" style="margin:0 0 1rem;">
-                        <strong><span class="dot dot-green"></span>Curso activo:</strong> Código <span class="text-blue">#{authSession.docenteCursoCodigo}</span>
+                        <strong><span class="dot dot-green"></span>Curso activo:</strong>
+                        <span class="text-blue">#{authSession.docenteCursoNombreGrado}</span>
                     </div>
                     <div class="panel-actions">
                         <p:button value="Administrar Estudiantes" outcome="/pages/administracion_estudiantes.xhtml" icon="pi pi-users" styleClass="p-button-success"/>

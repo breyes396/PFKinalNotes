@@ -83,4 +83,11 @@ public class DocenteEntityRepository implements DocenteRepository {
         Optional<DocenteEntity> doc = this.crudDocente.findByCodigoUsuario(codigoUsuario);
         return this.docenteMapper.toDto(doc.orElse(null));
     }
+
+    @Override
+    public DocenteDto obtenerDocentePorCodigoCurso(Long codigoCurso) {
+        if(codigoCurso == null) return null;
+        Optional<DocenteEntity> doc = this.crudDocente.findByCodigoCurso(codigoCurso);
+        return this.docenteMapper.toDto(doc.orElse(null));
+    }
 }

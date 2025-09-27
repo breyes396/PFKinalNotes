@@ -1,5 +1,6 @@
 package org.binaryminds.kinalnotes.dominio.service;
 
+import org.binaryminds.kinalnotes.dominio.dto.CursoDto;
 import org.binaryminds.kinalnotes.dominio.dto.EstudianteDto;
 import org.binaryminds.kinalnotes.dominio.dto.ModEstudianteDto;
 import org.binaryminds.kinalnotes.dominio.repository.EstudianteRepository;
@@ -37,5 +38,22 @@ public class EstudianteService {
 
     public List<EstudianteDto> obtenerEstudiantesPorCurso(Long codigoCurso){
         return this.estudianteRepository.obtenerEstudiantesPorCurso(codigoCurso);
+    }
+
+    // Nuevos métodos
+    public EstudianteDto obtenerEstudiantePorCodigoUsuario(Long codigoUsuario){
+        return this.estudianteRepository.obtenerEstudiantePorCodigoUsuario(codigoUsuario);
+    }
+    public void inscribirEnCurso(Long estudianteCodigo, Long cursoCodigo){
+        this.estudianteRepository.inscribirEnCurso(estudianteCodigo, cursoCodigo);
+    }
+    public void darseDeBajaCurso(Long estudianteCodigo, Long cursoCodigo){
+        this.estudianteRepository.darseDeBajaCurso(estudianteCodigo, cursoCodigo);
+    }
+    public List<CursoDto> obtenerCursosInscritos(Long estudianteCodigo){
+        return this.estudianteRepository.obtenerCursosInscritos(estudianteCodigo);
+    }
+    public List<CursoDto> obtenerCursosDisponibles(Long estudianteCodigo){
+        return this.estudianteRepository.obtenerCursosDisponibles(estudianteCodigo);
     }
 }
