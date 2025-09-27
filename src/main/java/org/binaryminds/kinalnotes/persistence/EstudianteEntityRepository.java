@@ -6,20 +6,32 @@ import org.binaryminds.kinalnotes.dominio.exception.EstudianteNoExisteException;
 import org.binaryminds.kinalnotes.dominio.exception.EstudianteYaExisteException;
 import org.binaryminds.kinalnotes.dominio.repository.EstudianteRepository;
 import org.binaryminds.kinalnotes.persistence.crud.CrudEstudianteEntity;
+import org.binaryminds.kinalnotes.persistence.crud.CrudCursoEntity;
+import org.binaryminds.kinalnotes.persistence.entity.CursoEntity;
 import org.binaryminds.kinalnotes.persistence.entity.EstudianteEntity;
 import org.binaryminds.kinalnotes.web.mapper.EstudianteMapper;
+import org.binaryminds.kinalnotes.web.mapper.CursoMapper;
+import org.binaryminds.kinalnotes.dominio.dto.CursoDto;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
 @Repository
 public class EstudianteEntityRepository implements EstudianteRepository{
 
     private final CrudEstudianteEntity crudEstudiante;
     private final EstudianteMapper estudianteMapper;
+    private final CrudCursoEntity crudCurso;
+    private final CursoMapper cursoMapper;
 
-    public EstudianteEntityRepository(CrudEstudianteEntity crudEstudiante, EstudianteMapper estudianteMapper){
+    public EstudianteEntityRepository(CrudEstudianteEntity crudEstudiante, EstudianteMapper estudianteMapper, CrudCursoEntity crudCurso, CursoMapper cursoMapper){
         this.crudEstudiante = crudEstudiante;
         this.estudianteMapper = estudianteMapper;
+        this.crudCurso = crudCurso;
+        this.cursoMapper = cursoMapper;
     }
 
     @Override
@@ -70,7 +82,7 @@ public class EstudianteEntityRepository implements EstudianteRepository{
     @Override
     public EstudianteDto obtenerEstudiantePorNombre(String nombre){
         if (nombre==null){
-            throw new EstudianteNoExisteException("El estudiante: " +  nombre + " no existe");
+            throw new EstudianteNoExisteException("El estudiante: "  + nombre + " no existe");
         }
         return this.estudianteMapper.toDto(this.crudEstudiante.findByNombre(nombre).orElse(null));
     }
@@ -81,5 +93,57 @@ public class EstudianteEntityRepository implements EstudianteRepository{
         return this.estudianteMapper.toDto(
                 this.crudEstudiante.findByCursos_Codigo(codigoCurso)
         );
+    }
+
+    @Override
+    public EstudianteDto obtenerEstudiantePorCodigoUsuario(Long codigoUsuario) {
+        if(codigoUsuario == null) return null;
+        Optional<EstudianteEntity> est = this.crudEstudiante.findByUsuario_Codigo(codigoUsuario);
+        return this.estudianteMapper.toDto(est.orElse(null));
+    }
+
+    @Override
+    public void inscribirEnCurso(Long estudianteCodigo, Long cursoCodigo) {
+        if(estudianteCodigo==null || cursoCodigo==null) return;
+        EstudianteEntity estudiante = crudEstudiante.findById(estudianteCodigo).orElse(null);
+        CursoEntity curso = crudCurso.findById(cursoCodigo).orElse(null);
+        if(estudiante==null || curso==null) return;
+        List<CursoEntity> cursos = estudiante.getCursos();
+        if(cursos == null){
+            cursos = new ArrayList<>();
+            estudiante.setCursos(cursos);
+        }
+        boolean yaInscrito = cursos.stream().anyMatch(c -> c.getCodigo().equals(cursoCodigo));
+        if(!yaInscrito){
+            cursos.add(curso);
+            crudEstudiante.save(estudiante);
+        }
+    }
+
+    @Override
+    public void darseDeBajaCurso(Long estudianteCodigo, Long cursoCodigo) {
+        if(estudianteCodigo==null || cursoCodigo==null) return;
+        EstudianteEntity estudiante = crudEstudiante.findById(estudianteCodigo).orElse(null);
+        if(estudiante==null || estudiante.getCursos()==null) return;
+        boolean removed = estudiante.getCursos().removeIf(c -> c.getCodigo().equals(cursoCodigo));
+        if(removed){
+            crudEstudiante.save(estudiante);
+        }
+    }
+
+    @Override
+    public List<CursoDto> obtenerCursosInscritos(Long estudianteCodigo) {
+        if(estudianteCodigo==null) return List.of();
+        EstudianteEntity estudiante = crudEstudiante.findById(estudianteCodigo).orElse(null);
+        if(estudiante==null || estudiante.getCursos()==null) return List.of();
+        return cursoMapper.toDto(estudiante.getCursos());
+    }
+
+    @Override
+    public List<CursoDto> obtenerCursosDisponibles(Long estudianteCodigo) {
+        // Lista de todos los cursos marcando cuales están inscritos (se manejará en la vista)
+        List<CursoEntity> todos = new ArrayList<>();
+        crudCurso.findAll().forEach(todos::add);
+        return cursoMapper.toDto(todos);
     }
 }

@@ -35,5 +35,7 @@ public class DocenteService {
     public DocenteDto obtenerDocentePorCodigoUsuario(Long codigoUsuario){
         return this.docenteRepository.obtenerDocentePorCodigoUsuario(codigoUsuario);
     }
-
+    public DocenteDto obtenerDocentePorCodigoCurso(Long codigoCurso){
+        return this.docenteRepository.obtenerDocentePorCodigoCurso(codigoCurso);
+    }
 }
